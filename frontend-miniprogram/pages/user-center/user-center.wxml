@@ -1,0 +1,81 @@
+<!--user-center.wxml 用户中心页-->
+<!--顶部卡片-->
+<view class="top-card"></view>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <!-- 用户信息 -->
+  <view class="userprofile">
+    <view class="profilecard">
+      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+      <view class="userinfo">
+        <view class="nickname">{{userInfo.nickName}}</view>
+        <view class="userstatus">账户正常</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 订单统计 -->
+  <view class="orderstats">
+    <view class="statitem" data-status="pending" bindtap="viewOrders">
+      <view class="statcount">{{orders.waitingPay}}</view>
+      <view class="statlabel">待支付</view>
+    </view>
+    <view class="statitem" data-status="paid" bindtap="viewOrders">
+      <view class="statcount">{{orders.waitingReceive}}</view>
+      <view class="statlabel">待完成</view>
+    </view>
+    <view class="statitem" data-status="completed" bindtap="viewOrders">
+      <view class="statcount">{{orders.completed}}</view>
+      <view class="statlabel">已完成</view>
+    </view>
+    <view class="statitem" data-status="cancelled" bindtap="viewOrders">
+      <view class="statcount">{{orders.cancelled}}</view>
+      <view class="statlabel">已取消</view>
+    </view>
+  </view>
+
+  <!-- 订单查询 -->
+  <view class="searchsection">
+    <view class="sectiontitle">订单查询</view>
+    <view class="searchbox">
+      <input 
+        class="searchinput"
+        placeholder="输入订单号查询"
+        value="{{searchOrderId}}"
+        bindinput="onOrderIdInput"
+        placeholder-style="color: #ccc;"
+      />
+      <view class="searchbtn" bindtap="searchOrder">搜索</view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menusection">
+    <view class="menugroup">
+      <view class="menuitem">
+        <text class="menuicon">🏠</text>
+        <text class="menutitle">餐厅地址</text>
+        <text class="menuarrow">></text>
+      </view>
+      <view class="menuitem">
+        <text class="menuicon">📋</text>
+        <text class="menutitle">修改取餐信息</text>
+        <text class="menuarrow">></text>
+      </view>
+      <view class="menuitem">
+        <text class="menuicon">❓</text>
+        <text class="menutitle">帮助中心</text>
+        <text class="menuarrow">></text>
+      </view>
+      <view class="menuitem">
+        <text class="menuicon">ℹ️</text>
+        <text class="menutitle">关于我们</text>
+        <text class="menuarrow">></text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 登出按钮 -->
+  <view class="logoutsection" wx:if="{{userInfo.nickName !== '用户'}}">
+    <view class="logoutbtn" bindtap="logout">退出登录</view>
+  </view>
+</scroll-view>

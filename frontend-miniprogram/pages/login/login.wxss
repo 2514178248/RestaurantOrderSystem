@@ -1,0 +1,137 @@
+/* 顶部色卡 */
+.top-card{
+  margin-bottom:0 ;
+  background-color:#ffd84a ;
+  height: 100px;
+  width: 100vh;
+}
+
+/* 背景 */
+.login-bg {
+  position: fixed;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+}
+.bg-img {
+  width: 100%; height: 100%;
+  /* 背景图 完全清晰 不模糊！！*/
+  filter: none;
+  transform: scale(1);
+}
+
+/* 核心遮罩：左白 → 透明（显示清晰背景） + 上下柔和过渡到纯白 */
+.login-mask {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  z-index: 1;
+  /*
+    第一层：左右渐变 → 左白 14vw（大于你的文字 8vw）→ 右边透明显示原图
+    第二层：上下渐变 → 分界线柔和过渡 → 底部纯白卡片
+  */
+  background: 
+    linear-gradient(to right, #ffffff 0%, #ffffff 14vw, rgba(255,255,255,0) 100%),
+    linear-gradient(to bottom, 
+      transparent 0%,        /* 上方：透明 → 显示清晰背景 */
+      transparent 72vh,
+      rgba(255,255,255,0.6) 78vh,
+      #ffffff 85vh,          /* 慢慢变成纯白 */
+      #ffffff 100%
+    );
+}
+
+/* ========================
+   以下内容完全不变，不影响你的布局
+======================== */
+.container {
+  position: relative;
+  z-index: 2;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* 区块1：标题 */
+.title-box {
+  position: absolute;
+  top: 15vh;
+  left: 8vw;
+}
+.title {
+  font-size: 75rpx;
+  font-weight: bold;
+  color: #60473d;
+  margin-bottom: 16rpx;
+  font-family: '宋体';
+}
+
+/* 区块2：副标题 */
+.font-middle {
+  position: absolute;
+  top: 37vh;
+  left: 8vw;
+}
+.subtitle {
+  font-weight: 500;
+  font-size: 35rpx;
+  color: #6f594d;
+}
+.subtitle1 {
+  margin-bottom: 27rpx;
+}
+
+/* 区块3：登录框 */
+.login-eare {
+  position: absolute;
+  top: 56vh;
+  left: 12vw;
+  right: 11vw;
+}
+
+.input-box {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 50rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.04);
+  padding: 0 24rpx;
+  margin-bottom: 40rpx;
+  height: 95rpx;
+}
+.input-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 16rpx;
+}
+.input {
+  flex: 1;
+  font-size: 32rpx;
+  background: transparent;
+  border: 0;
+}
+.error {
+  color: #e64340;
+  margin-bottom: 24rpx;
+  font-size: 26rpx;
+}
+.login-btn {
+  height: 95rpx;
+  width: 100%;
+  background: #ff6a00;
+  color: #fff;
+  font-size: 36rpx;
+  border-radius: 50rpx;
+  padding: 24rpx 0;
+  margin-bottom: 32rpx;
+}
+.protocol {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #888;
+}
+.protocol .link {
+  color: #ff6a00;
+  margin: 0 4rpx;
+}

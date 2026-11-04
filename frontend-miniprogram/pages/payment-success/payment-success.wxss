@@ -1,0 +1,104 @@
+/**payment-success.wxss*/
+page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1296db 0%, #0a7ec8 100%);
+}
+
+.successcontainer {
+  text-align: center;
+  padding: 40rpx 20rpx;
+  color: #fff;
+}
+
+.successicon {
+  font-size: 120rpx;
+  display: block;
+  margin-bottom: 20rpx;
+  animation: scaleIn 0.5s ease-in-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.successtitle {
+  font-size: 48rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.successdesc {
+  font-size: 28rpx;
+  opacity: 0.9;
+  margin-bottom: 40rpx;
+}
+
+.orderinfo {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 30rpx;
+  border-radius: 12rpx;
+  margin-bottom: 50rpx;
+  backdrop-filter: blur(10rpx);
+}
+
+.infoitem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15rpx;
+  font-size: 24rpx;
+}
+
+.label {
+  opacity: 0.8;
+}
+
+.value {
+  font-weight: bold;
+  font-size: 26rpx;
+  font-family: monospace;
+}
+
+.buttongroup {
+  display: flex;
+  gap: 15rpx;
+  margin-bottom: 40rpx;
+}
+
+.btn {
+  flex: 1;
+  padding: 20rpx 30rpx;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  text-align: center;
+}
+
+.btnprimary {
+  background-color: #fff;
+  color: #1296db;
+}
+
+.btnsecondary {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: 2rpx solid #fff;
+}
+
+.countdowntext {
+  font-size: 24rpx;
+  opacity: 0.8;
+}
+
+.countdowntext text {
+  font-weight: bold;
+  font-size: 28rpx;
+}

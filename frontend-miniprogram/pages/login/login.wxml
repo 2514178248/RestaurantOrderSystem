@@ -1,0 +1,38 @@
+<!--顶部卡片-->
+<view class="top-card"></view>
+
+<view class="login-bg">
+  <image class="bg-img" src="../../images/login-bg.jpg" mode="aspectFill"></image>
+  <view class="login-mask"></view>
+</view>
+
+<view class="container">
+  <!-- 模块1：标题区 -->
+  <view class="title-box">
+    <view class="title title1">欢迎来到</view>
+    <view class="title title2">美味餐厅</view>
+  </view>
+
+  <!-- 模块2：副标题区 -->
+  <view class="font-middle">
+    <view class="subtitle subtitle1">精致美食 · 用心服务</view>
+    <view class="subtitle">为您带来美好的用餐体验</view>
+  </view>
+
+  <!-- 模块3：登录表单区 -->
+  <view class="login-eare"> 
+    <view class="input-box">
+      <image class="input-icon" src="../../images/phone.png"></image>
+      <input class="input" type="number" maxlength="11" placeholder="请输入手机号" bindinput="onInput" />
+    </view>
+    <view class="error" wx:if="{{errorMsg}}">{{errorMsg}}</view>
+    <button class="login-btn" bindtap="onLogin" loading="{{loading}}" disabled="{{loading}}">登录</button>
+    <view class="protocol">
+      <radio checked="{{checked}}" color="#e64340" bindtap="onCheck" />
+      <text>我已阅读并同意</text>
+      <text class="link">《用户协议》</text>
+      <text>和</text>
+      <text class="link">《隐私政策》</text>
+    </view>
+  </view>
+</view>

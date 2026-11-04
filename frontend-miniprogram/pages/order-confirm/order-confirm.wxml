@@ -1,0 +1,67 @@
+<!--order-confirm.wxml 订单确认页-->
+<!--顶部卡片-->
+<view class="top-card"></view>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <!-- 取餐信息 -->
+  <view class="section meallocationsection">
+    <view class="sectiontitle">取餐信息</view>
+    <view class="meallocationcard">
+      <view class="locationinfo">
+        <view class="locationlabel">取餐地点：</view>
+        <view class="locationvalue">{{mealLocation.location || '食垂3楼取餐点'}}</view>
+      </view>
+      <view wx:if="{{mealLocation.phone}}" class="phoneinfo">
+        <view class="phonelabel">联系电话：</view>
+        <view class="phonevalue">{{mealLocation.phone}}</view>
+      </view>
+      <view class="editbtn" bindtap="editMealLocation">修改</view>
+    </view>
+  </view>
+
+  <!-- 商品清单 -->
+  <view class="section goodslistsection">
+    <view class="sectiontitle">订单商品</view>
+    <view class="goodslist">
+      <view wx:for="{{selectedGoods}}" wx:key="id" class="goodsitemconfirm">
+        <view class="goodsimagesmall">
+          <image src="{{item.image || '/images/default-goods.jpg'}}" mode="aspectFill"></image>
+        </view>
+        <view class="goodsinfoconfirm">
+          <view class="goodsname">{{item.name}}</view>
+          <view class="goodsdetails">
+            <view class="priceqty">
+              <text class="goodsprice">¥{{item.price}}</text>
+              <text class="goodsqty">×{{item.quantity}}</text>
+            </view>
+            <view class="goodssubtotal">¥{{item.subtotal}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 订单统计 -->
+    <view class="ordersummary">
+      <view class="summaryrow">
+        <text>商品数量：</text>
+        <text>{{totalCount}}</text>
+      </view>
+      <view class="summaryrow totalpricerow">
+        <text>合计金额：</text>
+        <text class="totalprice">¥{{totalPrice}}</text>
+      </view>
+    </view>
+  </view>
+
+</scroll-view>
+
+<!-- 操作栏 -->
+<view class="actionbar">
+  <view class="cancelbtn" bindtap="cancelOrder" wx:if="{{!paying}}">取消</view>
+  <view class="paybtn" bindtap="submitOrder" wx:if="{{!paying}}">
+    <text>提交订单</text>
+    <text class="payamount"> ¥{{totalPrice}}</text>
+  </view>
+  <view class="paybtn paying" wx:if="{{paying}}">
+    <text>提交中...</text>
+  </view>
+</view>

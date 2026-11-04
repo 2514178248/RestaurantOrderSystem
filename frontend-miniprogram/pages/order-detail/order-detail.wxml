@@ -1,0 +1,127 @@
+<!--order-detail.wxml 订单详情页-->
+<!--顶部卡片-->
+<view class="top-card"></view>
+<scroll-view class="scrollarea" scroll-y type="list" wx:if="{{order}}">
+  <!-- 订单状态 -->
+  <view class="statussection" wx:if="{{order.status === 'pending'}}">
+    <view class="statuscard pending">
+      <view class="statusicon">👨‍🍳</view>
+      <view class="statustitle">待支付</view>
+      <view class="statusdesc">请劓10分钟内完成支付</view>
+    </view>
+  </view>
+
+  <view class="statussection" wx:elif="{{order.status === 'paid'}}">
+    <view class="statuscard paid">
+      <view class="statusicon">👨‍🍳</view>
+      <view class="statustitle">待接单</view>
+      <view class="statusdesc">商家正在准备中</view>
+    </view>
+  </view>
+
+  <view class="statussection" wx:elif="{{order.status === 'completed'}}">
+    <view class="statuscard completed">
+      <view class="statusicon">👨‍🍳</view>
+      <view class="statustitle">已完成</view>
+      <view class="statusdesc">订单已完成</view>
+    </view>
+  </view>
+
+  <view class="statussection" wx:elif="{{order.status === 'cancelled'}}">
+    <view class="statuscard cancelled">
+      <view class="statusicon">👨‍🍳</view>
+      <view class="statustitle">已取消</view>
+      <view class="statusdesc">订单已取消</view>
+    </view>
+  </view>
+
+  <!-- 订单信息 -->
+  <view class="section orderinfo">
+    <view class="sectiontitle">订单信息</view>
+    <view class="inforow">
+      <view class="infolabel">订单号</view>
+      <view class="infovalue">
+        <text>{{order.orderNo}}</text>
+        <text class="copybtn" bindtap="copyOrderId">复制</text>
+      </view>
+    </view>
+    <view class="inforow">
+      <view class="infolabel">下单时间</view>
+      <view class="infovalue">{{order.createTimeText}}</view>
+    </view>
+    <view class="inforow">
+      <view class="infolabel">支付方式</view>
+      <view class="infovalue">{{order.paymentMethod === 'weixin' ? '微信支付' : '其他'}}</view>
+    </view>
+  </view>
+
+  <!-- 取餐信息 -->
+  <view class="section mealinfo">
+    <view class="sectiontitle">取餐信息</view>
+    <view class="mealcard">
+      <view class="mealitem">
+        <text class="mealicon">📍</text>
+        <view class="mealcontent">
+          <view class="meallabel">取餐地点</view>
+          <view class="mealvalue">{{order.mealLocation.location || '食埩2齐5楼取餐点'}}</view>
+        </view>
+      </view>
+      <view class="mealitem" wx:if="{{order.mealLocation.phone}}">
+        <text class="mealicon">📞</text>
+        <view class="mealcontent">
+          <view class="meallabel">联系电话</view>
+          <view class="mealvalue">{{order.mealLocation.phone}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 商品详情 -->
+  <view class="section goodsdetail">
+    <view class="sectiontitle">商品详情</view>
+    <view class="goodslist">
+      <view wx:for="{{order.goods}}" wx:key="id" class="goodsitemdetail">
+        <image class="goodsimg" src="{{item.image || '/images/default-goods.jpg'}}" mode="aspectFill"></image>
+        <view class="goodsinfo">
+          <view class="goodsname">{{item.name}}</view>
+          <view class="goodsspec">×{{item.quantity}}</view>
+        </view>
+        <view class="goodsamount">¥{{item.amount}}</view>
+      </view>
+    </view>
+
+    <!-- 费用清单 -->
+    <view class="feesummary">
+      <view class="feerow">
+        <text>商品总额</text>
+        <text>¥{{order.totalPriceFormatted}}</text>
+      </view>
+      <view class="feerow">
+        <text>配送费</text>
+        <text>¥0.00</text>
+      </view>
+      <view class="feerow totalrow">
+        <text>合计</text>
+        <text class="totalprice">¥{{order.totalPriceFormatted}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 支付方式（仅待支付时显示）-->
+  <view class="section paymentsection" wx:if="{{order.status === 'pending'}}">
+    <view class="sectiontitle">支付方式</view>
+    <view class="paymentmethod">
+      <view class="methoditem">
+        <text class="methodicon">💳</text>
+        <text class="methodname">微信支付</text>
+      </view>
+    </view>
+  </view>
+</scroll-view>
+
+<!-- 操作栏 -->
+<view class="actionbar" wx:if="{{order}}">
+  <view class="actionbtn secondary" bindtap="contactShop">联系商家</view>
+  <view class="actionbtn primary" bindtap="payNow" wx:if="{{order.status === 'pending'}}">立即支付</view>
+  <view class="actionbtn danger" bindtap="cancelOrder" wx:if="{{order.status === 'pending'}}">取消订单</view>
+</view>

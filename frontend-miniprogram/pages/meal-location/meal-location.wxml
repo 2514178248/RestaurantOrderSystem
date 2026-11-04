@@ -1,0 +1,50 @@
+<!--meal-location.wxml 取餐地点编辑页-->
+<!--顶部卡片-->
+<view class="top-card"></view>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="formsection">
+    <!-- 取餐地点选择 -->
+    <view class="formgroup">
+      <view class="formlabel">选择取餐地点</view>
+      <view class="locationoptions">
+        <view 
+          wx:for="{{locationOptions}}" 
+          wx:key="id"
+          class="locationitem {{selectedLocationId === index ? 'active' : ''}}"
+          data-index="{{index}}"
+          bindtap="selectLocation"
+        >
+          <view class="checkbox"></view>
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 联系电话 -->
+    <view class="formgroup">
+      <view class="formlabel">联系电话（可选）</view>
+      <view class="forminputgroup">
+        <input 
+          class="forminput"
+          type="number"
+          placeholder="输入您的手机号码"
+          value="{{phone}}"
+          bindinput="onPhoneInput"
+          placeholder-style="color: #ccc;"
+        />
+      </view>
+    </view>
+
+    <!-- 提示信息 -->
+    <view class="tipbox">
+      <text class="tipicon">ℹ️</text>
+      <text class="tiptext">取餐信息已保存，下次下单时将自动填充</text>
+    </view>
+  </view>
+</scroll-view>
+
+<!-- 操作栏 -->
+<view class="actionbar">
+  <view class="btn btncancel" bindtap="cancel">取消</view>
+  <view class="btn btnconfirm" bindtap="saveMealLocation">保存</view>
+</view>

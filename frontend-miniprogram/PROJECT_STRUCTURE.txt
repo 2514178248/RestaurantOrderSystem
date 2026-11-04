@@ -1,0 +1,257 @@
+CanYingDianDan/                                   # 项目根目录
+│
+├── 📄 项目配置文件
+│   ├── app.js                                   # 应用入口，全局数据管理
+│   ├── app.json                                 # 应用配置，页面路由、tabBar、权限
+│   ├── app.wxss                                 # 应用全局样式
+│   ├── project.config.json                      # 微信开发者工具配置
+│   ├── sitemap.json                             # SEO配置（小程序收录）
+│   └── project.private.config.json              # 私密配置（本地）
+│
+├── 📁 pages/                                    # 所有页面目录
+│   │
+│   ├── 📁 index/                                # 首页（主要页面）
+│   │   ├── index.js                             # 页面逻辑
+│   │   │   ├── data: 商品列表、分类、搜索关键词
+│   │   │   ├── onLoad(): 加载商品数据
+│   │   │   ├── onShow(): 更新购物车角标
+│   │   │   ├── loadGoodsList(): 获取商品列表
+│   │   │   ├── onSearchInput(): 搜索输入
+│   │   │   ├── switchCategory(): 分类切换
+│   │   │   ├── filterGoods(): 商品过滤
+│   │   │   ├── addToCart(): 添加到购物车
+│   │   │   └── updateCartBadge(): 更新角标
+│   │   ├── index.wxml                          # 页面模板
+│   │   │   ├── 自定义导航栏
+│   │   │   ├── 搜索框
+│   │   │   ├── 分类滚动栏
+│   │   │   └── 商品网格列表
+│   │   ├── index.wxss                          # 页面样式
+│   │   │   ├── .search-container               # 搜索栏样式
+│   │   │   ├── .category-*                     # 分类样式
+│   │   │   └── .goods-*                        # 商品样式
+│   │   └── index.json                          # 页面配置（组件注册）
+│   │
+│   ├── 📁 cart/                                 # 购物车页面
+│   │   ├── cart.js                              # 购物车逻辑
+│   │   │   ├── data: 购物车列表、选中状态、总价
+│   │   │   ├── loadCart(): 加载购物车
+│   │   │   ├── calculateTotal(): 计算总价
+│   │   │   ├── toggleGoodsSelected(): 选中商品
+│   │   │   ├── toggleSelectAll(): 全选
+│   │   │   ├── increaseQuantity(): 增加数量
+│   │   │   ├── decreaseQuantity(): 减少数量
+│   │   │   ├── deleteGoods(): 删除商品
+│   │   │   ├── checkout(): 结算
+│   │   │   └── navigateToHome(): 返回首页
+│   │   ├── cart.wxml                           # 购物车模板
+│   │   │   ├── 空购物车提示
+│   │   │   ├── 全选复选框
+│   │   │   ├── 商品列表项（含复选、数量、小计）
+│   │   │   └── 结算栏
+│   │   ├── cart.wxss                           # 购物车样式
+│   │   │   ├── .empty-*                        # 空状态样式
+│   │   │   ├── .cart-item                      # 商品项样式
+│   │   │   ├── .item-quantity                  # 数量控制样式
+│   │   │   └── .checkout-*                     # 结算栏样式
+│   │   └── cart.json                           # 页面配置
+│   │
+│   ├── 📁 order-confirm/                       # 订单确认页
+│   │   ├── order-confirm.js                    # 订单确认逻辑
+│   │   │   ├── data: 取餐信息、商品、总价
+│   │   │   ├── onLoad(): 加载订单数据
+│   │   │   ├── loadOrderData(): 加载详细数据
+│   │   │   ├── editMealLocation(): 编辑取餐地点
+│   │   │   ├── payOrder(): 支付
+│   │   │   ├── handlePaymentSuccess(): 支付成功处理
+│   │   │   └── cancelOrder(): 取消订单
+│   │   ├── order-confirm.wxml                  # 订单确认模板
+│   │   │   ├── 取餐信息卡片
+│   │   │   ├── 商品清单
+│   │   │   ├── 订单统计
+│   │   │   ├── 支付方式
+│   │   │   └── 操作栏
+│   │   ├── order-confirm.wxss                  # 订单确认样式
+│   │   └── order-confirm.json                  # 页面配置
+│   │
+│   ├── 📁 payment-success/                     # 支付成功页
+│   │   ├── payment-success.js                  # 支付成功逻辑
+│   │   │   ├── data: 订单ID、倒计时
+│   │   │   ├── onLoad(): 初始化倒计时
+│   │   │   ├── goHome(): 返回首页
+│   │   │   └── viewOrderDetail(): 查看订单
+│   │   ├── payment-success.wxml                # 成功页模板
+│   │   ├── payment-success.wxss                # 成功页样式
+│   │   └── payment-success.json                # 页面配置
+│   │
+│   ├── 📁 meal-location/                       # 取餐地点编辑页
+│   │   ├── meal-location.js                    # 取餐地点逻辑
+│   │   │   ├── data: 地点列表、选中地点、电话
+│   │   │   ├── onLoad(): 加载现有取餐信息
+│   │   │   ├── selectLocation(): 选择地点
+│   │   │   ├── onPhoneInput(): 输入电话
+│   │   │   ├── saveMealLocation(): 保存信息
+│   │   │   └── cancel(): 取消
+│   │   ├── meal-location.wxml                  # 地点编辑模板
+│   │   ├── meal-location.wxss                  # 地点编辑样式
+│   │   └── meal-location.json                  # 页面配置
+│   │
+│   ├── 📁 order-list/                          # 订单列表页
+│   │   ├── order-list.js                       # 订单列表逻辑
+│   │   │   ├── data: 订单列表、筛选状态
+│   │   │   ├── onLoad(): 加载订单列表
+│   │   │   ├── loadOrders(): 获取订单
+│   │   │   ├── viewOrderDetail(): 查看详情
+│   │   │   ├── formatTime(): 时间格式化
+│   │   │   ├── reorder(): 再次购买
+│   │   │   └── navigateToHome(): 返回首页
+│   │   ├── order-list.wxml                     # 订单列表模板
+│   │   ├── order-list.wxss                     # 订单列表样式
+│   │   └── order-list.json                     # 页面配置
+│   │
+│   ├── 📁 order-detail/                        # 订单详情页
+│   │   ├── order-detail.js                     # 订单详情逻辑
+│   │   │   ├── data: 订单数据
+│   │   │   ├── onLoad(): 加载订单详情
+│   │   │   ├── loadOrderDetail(): 获取详情
+│   │   │   ├── formatTime(): 时间格式化
+│   │   │   ├── copyOrderId(): 复制订单号
+│   │   │   ├── contactShop(): 联系商家
+│   │   │   ├── cancelOrder(): 取消订单
+│   │   │   └── payNow(): 现在支付
+│   │   ├── order-detail.wxml                   # 详情页模板
+│   │   ├── order-detail.wxss                   # 详情页样式
+│   │   └── order-detail.json                   # 页面配置
+│   │
+│   └── 📁 user-center/                         # 用户中心页
+│       ├── user-center.js                      # 用户中心逻辑
+│       │   ├── data: 用户信息、订单统计
+│       │   ├── onLoad(): 初始化
+│       │   ├── onShow(): 刷新数据
+│       │   ├── getUserInfo(): 获取用户信息
+│       │   ├── loadOrderStats(): 加载订单统计
+│       │   ├── login(): 用户登录
+│       │   ├── viewOrders(): 查看订单列表
+│       │   ├── onOrderIdInput(): 输入订单号
+│       │   ├── searchOrder(): 搜索订单
+│       │   └── logout(): 退出登录
+│       ├── user-center.wxml                    # 用户中心模板
+│       ├── user-center.wxss                    # 用户中心样式
+│       └── user-center.json                    # 页面配置
+│
+├── 📁 components/                              # 自定义组件目录
+│   └── 📁 navigation-bar/                      # 自定义顶部导航栏
+│       ├── navigation-bar.js                   # 组件逻辑
+│       │   ├── properties: title(标题)、back(返回)、color(颜色)等
+│       │   ├── methods: goBack()、goHome()等
+│       │   └── lifetimes: attached()、detached()等
+│       ├── navigation-bar.wxml                 # 组件模板
+│       ├── navigation-bar.wxss                 # 组件样式
+│       └── navigation-bar.json                 # 组件配置
+│
+├── 📁 utils/                                   # 工具函数目录
+│   ├── storage.js                              # 本地存储工具
+│   │   ├── getCart() / setCart()              # 购物车操作
+│   │   ├── getUserInfo() / setUserInfo()      # 用户信息操作
+│   │   ├── getMealLocation() / setMealLocation() # 取餐地点操作
+│   │   ├── getOrderHistory() / addOrder()     # 订单操作
+│   │   ├── updateOrderStatus()                # 订单状态更新
+│   │   └── getOrder() / getOrdersByStatus()   # 订单查询
+│   │
+│   ├── http.js                                 # HTTP 请求工具
+│   │   ├── API_BASE_URL 配置                   # API 基础地址
+│   │   ├── get(endpoint, options)             # GET 请求
+│   │   ├── post(endpoint, data, options)      # POST 请求
+│   │   ├── put(endpoint, data, options)       # PUT 请求
+│   │   ├── delete(endpoint, options)          # DELETE 请求
+│   │   └── request() 核心方法                  # 核心请求方法
+│   │
+│   └── api.js                                  # API 接口定义
+│       ├── goods 商品接口
+│       │   ├── getList()                      # 获取商品列表
+│       │   ├── getDetail()                    # 获取商品详情
+│       │   └── search()                       # 搜索商品
+│       ├── order 订单接口
+│       │   ├── create()                       # 创建订单
+│       │   ├── getList()                      # 获取订单列表
+│       │   ├── getDetail()                    # 获取订单详情
+│       │   ├── updateStatus()                 # 更新订单状态
+│       │   ├── cancel()                       # 取消订单
+│       │   └── pay()                          # 订单支付
+│       ├── user 用户接口
+│       │   ├── login()                        # 用户登录
+│       │   ├── getInfo()                      # 获取用户信息
+│       │   └── updateInfo()                   # 更新用户信息
+│       ├── payment 支付接口
+│       │   ├── requestWeChatPay()             # 请求微信支付
+│       │   └── queryPaymentStatus()           # 查询支付状态
+│       └── cart 购物车接口（可选）
+│           ├── sync()                         # 同步购物车
+│           └── get()                          # 获取购物车
+│
+├── 📁 images/                                  # 图片资源目录（需创建）
+│   ├── home.png                                # 首页图标
+│   ├── home-active.png                         # 首页活跃图标
+│   ├── cart.png                                # 购物车图标
+│   ├── cart-active.png                         # 购物车活跃图标
+│   ├── user.png                                # 用户图标
+│   ├── user-active.png                         # 用户活跃图标
+│   ├── goods1.jpg                              # 商品示例图片
+│   ├── default-goods.jpg                       # 默认商品图片
+│   └── default-avatar.png                      # 默认用户头像
+│
+└── 📄 文档文件
+    ├── README.md                                # 项目说明（项目架构、功能说明）
+    ├── QUICK_START.md                           # 快速开始指南（如何快速上手）
+    ├── API_SPEC.md                              # API 接口规范（后端需实现）
+    ├── PROJECT_SUMMARY.md                       # 项目完成总结（项目总结、统计）
+    └── CHECKLIST.md                             # 项目验收清单（功能检查）
+
+
+=================================================================
+                         关键路径说明
+=================================================================
+
+✨ 数据流向:
+   前端 (Page) ↔ Storage (本地存储) ↔ Backend API
+
+📱 页面导航流:
+   index (首页) 
+   ├→ cart (购物车) → order-confirm (订单确认) → payment-success (成功)
+   ├→ meal-location (取餐地点编辑)
+   ├→ order-detail (订单详情)
+   └→ user-center (用户中心) → order-list (订单列表) → order-detail
+
+🛠️ 工具调用:
+   Pages → Storage.js / API.js ← HTTP.js ← Backend Server
+
+📊 数据持久化:
+   购物车     → wx.storage.setItem('cart_items')
+   用户信息   → wx.storage.setItem('user_info')
+   订单历史   → wx.storage.setItem('order_history')
+   取餐地点   → wx.storage.setItem('meal_location')
+
+=================================================================
+                      文件大小统计
+=================================================================
+
+Pages (8 pages × 4 files)     : ~32 files    (~3000 lines)
+Components (1 component × 4)  : ~4 files     (~200 lines)
+Utils (3 modules)             : ~3 files     (~1500 lines)
+Config files                  : ~6 files     (~200 lines)
+Documentation (5 docs)        : ~5 files     (~4000 lines)
+
+Total: 50+ files, ~8900 lines of code & documentation
+
+=================================================================
+                     快速开始步骤
+=================================================================
+
+1. 在微信开发者工具中打开此项目
+2. 点击预览查看效果
+3. 修改 utils/http.js 中的 API_BASE_URL
+4. 与后端开发者按照 API_SPEC.md 对接
+5. 完成功能测试
+6. 配置生产环境发布
+
+=================================================================

@@ -1,0 +1,348 @@
+/* pages/cart/cart.wxss */
+.top-card{
+  margin-bottom:0 ;
+  background-color:#ffd84a ;
+  height: 100px;
+  width: 100vh;
+}
+page {
+  height: 100vh;
+  background: #f4f4f6;
+  /* 禁止页面横向滚动 + 隐藏滚动条 */
+  overflow-x: hidden;
+}
+
+.page {
+  height: 100%;
+  /* 禁止页面横向滚动 + 隐藏滚动条 */
+  overflow-x: hidden;
+}
+
+.empty-cart {
+  height: 100%;
+  padding: 0 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 110rpx;
+  margin-bottom: 16rpx;
+}
+
+.empty-title {
+  font-size: 34rpx;
+  color: #1f2329;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.empty-desc {
+  font-size: 24rpx;
+  color: #8a9099;
+  margin-bottom: 30rpx;
+}
+
+.empty-btn {
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 999rpx;
+  padding: 0 46rpx;
+  background: #efd36a;
+  color: #222;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.cart-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* 禁止横向滚动条 */
+  overflow-x: hidden;
+}
+
+.cart-nav {
+  height: calc(env(safe-area-inset-top) + 86rpx);
+  padding-top: env(safe-area-inset-top);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f4f6;
+}
+
+.cart-title {
+  font-size: 34rpx;
+  color: #1f2329;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.cart-header {
+  height: 86rpx;
+  padding: 0 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f4f4f6;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.header-text {
+  font-size: 26rpx;
+  color: #555d68;
+}
+
+.clear-btn {
+  font-size: 24rpx;
+  color: #8e95a0;
+  padding: 10rpx 0 10rpx 20rpx;
+}
+
+.goods-list {
+  flex: 1;
+  padding: 18rpx 24rpx 0;
+  /* 禁止横向滚动条 */
+  overflow-x: hidden;
+}
+
+.cart-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+  padding-right: 40rpx;
+  /* 禁止横向滚动条 */
+  overflow-x: hidden;
+}
+
+.check-wrap {
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.select-circle {
+  width: 34rpx;
+  height: 34rpx;
+  border-radius: 50%;
+  border: 2rpx solid #bfc4cb;
+  background: #f4f4f6;
+  transition: all 0.24s ease;
+}
+
+.select-circle.active {
+  border-color: #efd36a;
+  background: #f5dd8f;
+}
+
+.cart-item {
+  flex: 1;
+  position: relative;
+  border-radius: 30rpx;
+  overflow: hidden;
+  margin-right:60rpx;
+  /* 禁止横向滚动条 */
+  overflow-x: hidden;
+}
+
+.item-main {
+  min-height: 152rpx;
+  background: #ffffff;
+  border-radius: 30rpx;
+  display: flex;
+  align-items: center;
+  padding: 14rpx 16rpx;
+  transform: translateX(0);
+  transition: transform 0.24s ease;
+}
+
+.cart-item.swiped .item-main {
+  transform: translateX(-128rpx);
+}
+
+.goods-image {
+  width: 122rpx;
+  height: 122rpx;
+  border-radius: 24rpx;
+  background: #f0f2f4;
+  flex-shrink: 0;
+}
+
+.goods-info {
+  flex: 1;
+  min-width: 0;
+  padding: 0 14rpx;
+}
+
+.goods-name {
+  font-size: 30rpx;
+  color: #1f2329;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 8rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.goods-desc {
+  font-size: 22rpx;
+  color: #9aa0aa;
+  margin-bottom: 10rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.goods-price {
+  font-size: 36rpx;
+  color: #222;
+  font-weight: 700;
+}
+
+.item-quantity {
+  width: 120rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.qty-btn {
+  width: 30rpx;
+  height: 30rpx;
+  border-radius: 8rpx;
+  background: #efd36a;
+  color: #1f2329;
+  font-size: 24rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-align: center;
+}
+
+.qty-value {
+  width: 34rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #232933;
+  font-weight: 600;
+}
+
+.delete-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 128rpx;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  border: none;
+  background: #ff6258;
+  color: #fff;
+  font-size: 26rpx;
+  transform: translateX(100%);
+  transition: transform 0.24s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.cart-item.swiped .delete-btn {
+  transform: translateX(0);
+}
+
+.list-gap {
+  height: 240rpx;
+}
+
+.pay-popup {
+  position: fixed;
+  left: 24rpx;
+  right: 24rpx;
+  bottom: 0;
+  transform: translateY(110%);
+  opacity: 0;
+  transition: transform 0.32s cubic-bezier(0.32, 0.72, 0.2, 1), opacity 0.32s ease;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.pay-popup.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.popup-inner {
+  background: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 22rpx 24rpx calc(22rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -8rpx 30rpx rgba(0, 0, 0, 0.08);
+}
+
+.popup-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18rpx;
+}
+
+.popup-count {
+  font-size: 26rpx;
+  color: #222933;
+  font-weight: 600;
+}
+
+.popup-total {
+  font-size: 30rpx;
+  color: #222933;
+  font-weight: 700;
+}
+
+.pay-btn {
+  width: 100%;
+  height: 88rpx;
+  margin-top: 50rpx;
+  padding: 0 20rpx;
+  border: none;
+  border-radius: 999rpx;
+  background: #efd36a;
+  color: #222;
+  font-size: 34rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.pay-btn.disabled {
+  background: #ebedf0;
+  color: #9da4ae;
+}
+
+/* 全局隐藏微信小程序滚动条 */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}

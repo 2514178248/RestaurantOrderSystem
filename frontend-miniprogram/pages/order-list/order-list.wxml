@@ -1,0 +1,53 @@
+<!--order-list.wxml 订单列表页-->
+<!--顶部卡片-->
+<view class="top-card"></view>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view wx:if="{{orders.length === 0}}" class="emptylist">
+    <view class="emptyicon">📋</view>
+    <view class="emptytext">暂无{{statusMap[status]}}订单</view>
+    <view class="emptydesc">快去首页选购吧</view>
+    <view class="emptybtn" bindtap="navigateToHome">去首页逛逛</view>
+  </view>
+
+  <view wx:else class="orderslist">
+    <view wx:for="{{orders}}" wx:key="orderId" class="ordercard">
+      <!-- 订单头部 -->
+      <view class="orderheader">
+        <view class="orderinfo">
+          <view class="orderid">{{item.orderNo}}</view>
+          <view class="ordertime">{{item.createTimeText}}</view>
+        </view>
+        <view class="orderstatus">{{statusMap[item.status]}}</view>
+      </view>
+
+      <!-- 商品列表 -->
+      <view class="goodspreview">
+        <view wx:for="{{item.goods}}" wx:key="id" class="goodspreviewitem">
+          <image class="goodsimg" src="{{item.image || '/images/default-goods.jpg'}}" mode="aspectFill"></image>
+          <view class="goodspreviewinfo">
+            <view class="goodsname">{{item.name}}</view>
+            <view class="goodsprice">¥{{item.price}}</view>
+          </view>
+          <view class="goodsqty">×{{item.quantity}}</view>
+        </view>
+      </view>
+      <!-- 订单统计 -->
+      <view class="ordersummary">
+        <view class="summarytotal">
+          <text>合计：</text>
+          <text class="totalprice">¥{{item.totalPriceFormatted || item.totalPrice}}</text>
+        </view>
+      </view>
+
+      <!-- 订单操作 -->
+      <view class="orderactions">
+        <view class="actionbtn" data-order-id="{{item.orderId}}" bindtap="viewOrderDetail">
+          查看详情
+        </view>
+        <view class="actionbtn" data-order-id="{{item.orderId}}" bindtap="reorder">
+          再次购买
+        </view>
+      </view>
+    </view>
+  </view>
+</scroll-view>

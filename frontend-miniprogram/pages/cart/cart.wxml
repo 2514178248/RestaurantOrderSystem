@@ -1,0 +1,90 @@
+<!-- pages/cart/cart.wxml -->
+<view class="page">
+  <!--顶部卡片-->
+  <view class="top-card"></view>
+  <view wx:if="{{cartList.length === 0}}" class="empty-cart">
+    <view class="empty-icon">🛒</view>
+    <view class="empty-title">购物车还是空的</view>
+    <view class="empty-desc">快去选几道喜欢的菜吧</view>
+    <view class="empty-btn" bindtap="goToHome">去点餐</view>
+  </view>
+
+  <view wx:else class="cart-content">
+    <view class="cart-nav">
+      <text class="cart-title">购物车</text>
+    </view>
+
+    <view class="cart-header">
+      <label class="header-left" catchtap="toggleSelectAll">
+        <view class="select-circle {{selectedAll ? 'active' : ''}}"></view>
+        <text class="header-text">全选</text>
+      </label>
+      <view class="clear-btn" bindtap="clearCart">清空</view>
+    </view>
+
+    <scroll-view class="goods-list" scroll-y>
+      <block wx:for="{{cartList}}" wx:key="cartId">
+        <view class="cart-row">
+          <view class="check-wrap" catchtap="toggleGoodsSelected" data-id="{{item.cartId}}">
+            <view class="select-circle {{item.selected ? 'active' : ''}}"></view>
+          </view>
+
+          <view class="cart-item {{deleteIndex===item.cartId ? 'swiped' : ''}}">
+            <view
+              class="item-main"
+              data-id="{{item.cartId}}"
+              bindtouchstart="onTouchStart"
+              bindtouchmove="onTouchMove"
+              bindtouchend="onTouchEnd"
+              bindtap="closeSwiped"
+            >
+              <image class="goods-image" src="{{item.image || '/images/default-goods.jpg'}}" mode="aspectFill"></image>
+
+              <view class="goods-info">
+                <view class="goods-name">{{item.name}}</view>
+                <view class="goods-desc">{{item.specs || '默认规格'}}</view>
+                <view class="goods-price">¥{{item.subtotal}}</view>
+              </view>
+
+              <view class="item-quantity">
+                <view
+                  class="qty-btn"
+                  catchtap="decreaseQuantity"
+                  data-role="qtybtn"
+                  data-id="{{item.cartId}}"
+                >-</view>
+                <text class="qty-value">{{item.quantity}}</text>
+                <view
+                  class="qty-btn"
+                  catchtap="increaseQuantity"
+                  data-role="qtybtn"
+                  data-id="{{item.cartId}}"
+                >+</view>
+              </view>
+            </view>
+
+            <button class="delete-btn" catchtap="deleteGoods" data-id="{{item.cartId}}">删除</button>
+          </view>
+        </view>
+      </block>
+      <view class="list-gap"></view>
+    </scroll-view>
+
+    <view class="pay-popup {{hasSelected ? 'show' : ''}}">
+      <view class="popup-inner">
+        <view class="popup-row">
+          <text class="popup-count">共计: {{totalCount}}件</text>
+          <text class="popup-total">合计: {{totalPrice}}元</text>
+        </view>
+        <button
+          class="pay-btn {{!canCheckout ? 'disabled' : ''}}"
+          bindtap="checkout"
+          disabled="{{!canCheckout}}"
+        >
+          <block wx:if="{{canCheckout}}">支付</block>
+          <block wx:else>{{checkoutTip}}</block>
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

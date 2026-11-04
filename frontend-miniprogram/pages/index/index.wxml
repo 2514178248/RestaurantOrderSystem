@@ -1,0 +1,63 @@
+<!--index.wxml-->
+
+<scroll-view class="scrollarea" scroll-y type="list">
+  <!--顶部卡片-->
+  <view class="top-card"></view>
+  <!-- 搜索栏 -->
+  <view class="searchcontainer">
+    <view class="searchbox">
+      <text class="searchicon">🔍</text>
+      <input 
+        class="searchinput" 
+        placeholder="搜索商品名称" 
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+      />
+      <view wx:if="{{searchKeyword}}" class="clearicon" bindtap="clearSearch">×</view>
+    </view>
+  </view>
+
+  <!-- 分类导航 -->
+  <scroll-view class="categorycontainer" scroll-x>
+    <view class="categorylist">
+      <view 
+        wx:for="{{categories}}" 
+        wx:key="id"
+        class="categoryitem {{item.active ? 'active' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="switchCategory"
+      >
+        {{item.name}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 商品列表 -->
+  <view class="goodscontainer">
+    <view wx:if="{{loading}}" class="loadingtext">加载中...</view>
+    <view wx:elif="{{filteredGoodsList.length === 0}}" class="emptytext">
+      暂无相关商品
+    </view>
+    <view wx:else class="goodslist">
+      <view 
+        wx:for="{{filteredGoodsList}}" 
+        wx:key="id"
+        wx:if="{{item.status == 1}}"
+        class="goodsitem"
+        data-goods="{{item}}"
+        bindtap="addToCart"
+      >
+        <image class="goodsimage" src="{{item.image || '/images/default-goods.jpg'}}" mode="aspectFill"></image>
+        <view class="goodsinfo">
+          <view class="goodsname">{{item.name}}</view>
+          <view class="goodsdesc">{{item.description || ''}}</view>
+          <view class="goodsprice">
+            <text class="pricesymbol">¥</text>
+            <text class="pricevalue">{{item.price}}</text>
+          </view>
+        </view>
+        <view class="addcartbtn">+</view>
+      </view>
+    </view>
+  </view>
+</scroll-view>
