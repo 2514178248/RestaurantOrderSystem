@@ -91,18 +91,23 @@ mysqldump -uroot -p \
 
 ---
 
-## 六、安全提醒
+## 六、已脱敏说明
 
-`bishe.sql` 里包含作者测试时的微信 openid、手机号、邮箱。**公开仓库前建议执行一次脱敏**：
+`bishe.sql` 在打包进本仓库前已经做过脱敏处理：
+
+| 敏感字段 | 原始值示例 | 已替换为 |
+| --- | --- | --- |
+| 微信 openid（`user.openid` / `order_main.user_id`） | `oZNCE1-fyD...` | `oTEST000000000000000000000001` / `...002` |
+| C 端用户手机号（`user.tel-number`） | `13576850381` 等 | `13800000001` / `13800000002` |
+| 商家账号（`vue_user.username`） | `LJL` | `admin` |
+| 商家手机号（`vue_user.phone`） | 真实手机号 | `13800000001` |
+| 商家邮箱（`vue_user.email`） | 真实 QQ 邮箱 | `admin@example.com` |
+
+如果你是在本地自己重新 dump 的库，想公开前再脱敏一遍，可执行：
 
 ```sql
 USE bishe;
--- 清空 C 端用户和订单（保留 dishes 菜品演示数据）
-TRUNCATE order_detail;
-TRUNCATE order_main;
-TRUNCATE user;
--- 保留 vue_user 或一并清空后自己注册新账号
--- TRUNCATE vue_user;
+UPDATE user SET tel-number='13800000001', nickname='13800000001', openid='oTEST000000000000000000000001' WHERE openid LIKE 'oZ%';
+UPDATE order_main SET user_id='oTEST000000000000000000000001' WHERE user_id LIKE 'oZ%';
+UPDATE vue_user SET username='admin', phone='13800000001', email='admin@example.com' WHERE id=1;
 ```
-
-然后重新 `mysqldump` 覆盖 `database/bishe.sql`。
