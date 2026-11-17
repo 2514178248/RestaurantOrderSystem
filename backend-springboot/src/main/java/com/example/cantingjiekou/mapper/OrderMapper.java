@@ -32,19 +32,19 @@ public interface OrderMapper extends BaseMapper<Order> {
             "WHERE pay_status IN (1, 2)")
     Map<String, Object> selectDashboardStats();
 
-    // 商家后台：带筛选条件的分页订单列表（排除待支付订单）
-    @Select("<script>SELECT * FROM order_main WHERE pay_status != 0 " +
+    // 商家后台：带筛选条件的分页订单列表（包含待支付订单，按订单ID倒序保证新订单在前）
+    @Select("<script>SELECT * FROM order_main WHERE 1=1 " +
             "<if test='orderNo != null and orderNo != \"\"'> AND order_no LIKE CONCAT('%', #{orderNo}, '%') </if>" +
             "<if test='status != null'> AND pay_status = #{status} </if>" +
             "<if test='startDate != null and startDate != \"\"'> AND DATE(pay_time) &gt;= #{startDate} </if>" +
             "<if test='endDate != null and endDate != \"\"'> AND DATE(pay_time) &lt;= #{endDate} </if>" +
-            "ORDER BY pay_time DESC LIMIT #{offset}, #{limit}</script>")
+            "ORDER BY order_id DESC LIMIT #{offset}, #{limit}</script>")
     List<Order> selectAdminOrderList(@Param("orderNo") String orderNo, @Param("status") Integer status,
                                      @Param("startDate") String startDate, @Param("endDate") String endDate,
                                      @Param("offset") int offset, @Param("limit") int limit);
 
-    // 商家后台：符合条件的订单总数（排除待支付订单）
-    @Select("<script>SELECT COUNT(*) FROM order_main WHERE pay_status != 0 " +
+    // 商家后台：符合条件的订单总数（与列表查询条件一致，包含待支付订单）
+    @Select("<script>SELECT COUNT(*) FROM order_main WHERE 1=1 " +
             "<if test='orderNo != null and orderNo != \"\"'> AND order_no LIKE CONCAT('%', #{orderNo}, '%') </if>" +
             "<if test='status != null'> AND pay_status = #{status} </if>" +
             "<if test='startDate != null and startDate != \"\"'> AND DATE(pay_time) &gt;= #{startDate} </if>" +

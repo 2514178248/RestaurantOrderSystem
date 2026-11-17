@@ -3,6 +3,7 @@
  */
 const Storage = require('../../utils/storage');
 const HttpRequest = require('../../utils/http');
+const WS = require('../../utils/websocket');
 
 const PAY_STATUS_TO_STATUS = {
   0: 'pending',
@@ -35,9 +36,34 @@ Page({
     const status = options.status || 'all';
     this.setData({ status });
     this.loadOrders();
+    // 绑定 this 后再交给 WS 模块，保证回调里能访问页面实例
+    this._wsHandler = this.handleWsMessage.bind(this);
   },
 
   onShow() {
+    this.loadOrders();
+    // 订阅 WebSocket 推送：商家改状态后本页自动刷新，无需下拉或重进
+    WS.subscribe(this._wsHandler);
+  },
+
+  onHide() {
+    WS.unsubscribe(this._wsHandler);
+  },
+
+  onUnload() {
+    WS.unsubscribe(this._wsHandler);
+  },
+
+  /**
+   * WebSocket 推送回调：订单状态变更时自动刷新列表
+   */
+  handleWsMessage(msg) {
+    if (msg.type !== 'status_change') return;
+
+    const statusTextMap = { 1: '订单已支付', 2: '已完成', 3: '已取消' };
+    if (msg.payStatus !== undefined && statusTextMap[msg.payStatus]) {
+      wx.showToast({ title: `有订单${statusTextMap[msg.payStatus]}`, icon: 'none', duration: 2000 });
+    }
     this.loadOrders();
   },
 

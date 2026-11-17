@@ -8,6 +8,7 @@
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="searchForm.status" placeholder="全部状态" clearable @change="fetchOrders">
+            <el-option label="待支付" value="pending"></el-option>
             <el-option label="待完成" value="processing"></el-option>
             <el-option label="已完成" value="completed"></el-option>
             <el-option label="已取消" value="cancelled"></el-option>
@@ -104,7 +105,7 @@
 
 <script setup>
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
-import { ElMessage, ElNotification } from 'element-plus'
+import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import axios from 'axios'
 
 const orderList = ref([])
@@ -122,6 +123,7 @@ const searchForm = reactive({
 
 const getStatusType = (status) => {
   const map = {
+    pending: 'danger',
     processing: 'warning',
     completed: 'success',
     cancelled: 'info'
@@ -131,6 +133,7 @@ const getStatusType = (status) => {
 
 const getStatusText = (status) => {
   const map = {
+    pending: '待支付',
     processing: '待完成',
     completed: '已完成',
     cancelled: '已取消'
@@ -177,6 +180,16 @@ const fetchOrders = async () => {
 }
 
 const handleStatusChange = async (row, newStatus) => {
+  // 防误触：弹窗确认后才执行，点击取消则不修改状态
+  try {
+    await ElMessageBox.confirm(
+      `是否将订单 ${row.orderNo} 标记为已完成？`,
+      '确认操作',
+      { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+    )
+  } catch (e) {
+    return // 用户点击取消
+  }
   try {
     const response = await axios.put(`/order/${row.id}/status`, { status: newStatus })
     if (response.data.code === 200 || response.data.success) {
@@ -196,42 +209,55 @@ const showDetail = (row) => {
   detailVisible.value = true
 }
 
-// Polling for new orders
-let timer = null
-let lastOrderCount = 0
+// WebSocket 实时接收订单推送（新订单/状态变更）
+let ws = null
+let reconnectTimer = null
 
-const checkNewOrders = async () => {
-  try {
-    const response = await axios.get('/order/list', { params: { status: 'processing', page: 1, pageSize: 1 } })
-    if (response.data.code === 200 && response.data.data) {
-      const currentCount = response.data.data.total || 0
-      if (currentCount > lastOrderCount && lastOrderCount > 0) {
+const connectWebSocket = () => {
+  // 通过 Vite 代理连接后端，避免写死 IP
+  const proto = window.location.protocol === 'https:' ? 'wss' : 'ws'
+  ws = new WebSocket(`${proto}://${window.location.host}/ws/orders`)
+
+  ws.onmessage = (event) => {
+    try {
+      const msg = JSON.parse(event.data)
+      if (msg.type === 'new_order') {
         ElNotification({
           title: '新订单提醒',
-          message: '您有新的待处理订单，请及时处理',
+          message: `收到新订单 ${msg.orderNo || ''}，金额 ¥${msg.amount ?? '--'}，请及时处理`,
           type: 'warning',
-          duration: 0
+          duration: 5000
         })
       }
-      lastOrderCount = currentCount
+      // 新订单 / 状态变更均刷新列表
+      fetchOrders()
+    } catch (e) {
+      console.error('解析 WebSocket 消息失败:', e)
     }
-  } catch (error) {
-    console.error('检查新订单失败:', error)
   }
-}
 
-const startNewOrderSimulation = () => {
-  checkNewOrders()
-  timer = setInterval(checkNewOrders, 30000)
+  ws.onclose = () => {
+    // 断线 5 秒后自动重连
+    reconnectTimer = setTimeout(connectWebSocket, 5000)
+  }
+
+  ws.onerror = () => {
+    ws && ws.close()
+  }
 }
 
 onMounted(() => {
   fetchOrders()
-  startNewOrderSimulation()
+  connectWebSocket()
 })
 
 onUnmounted(() => {
-  if (timer) clearInterval(timer)
+  if (ws) {
+    ws.onclose = null // 防止触发重连
+    ws.close()
+    ws = null
+  }
+  if (reconnectTimer) clearTimeout(reconnectTimer)
 })
 </script>
 

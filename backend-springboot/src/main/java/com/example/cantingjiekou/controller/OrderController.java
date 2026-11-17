@@ -2,6 +2,7 @@ package com.example.cantingjiekou.controller;
 
 import com.example.cantingjiekou.entity.Order;
 import com.example.cantingjiekou.entity.OrderItem;
+import com.example.cantingjiekou.config.OrderWebSocketHandler;
 import com.example.cantingjiekou.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +63,13 @@ public class OrderController {
             result.put("msg", "订单提交成功");
             ((Map<String, Object>) result.get("data")).put("orderId", orderId);
             ((Map<String, Object>) result.get("data")).put("orderNo", orderNo);
+
+            // 5. WebSocket 实时推送新订单给商家后台
+            Map<String, Object> pushData = new HashMap<>();
+            pushData.put("orderId", orderId);
+            pushData.put("orderNo", orderNo);
+            pushData.put("amount", order != null ? order.getTotalAmount() : null);
+            OrderWebSocketHandler.broadcast("new_order", pushData);
 
         } catch (NumberFormatException e) {
             // 精准捕获数字转换异常
@@ -199,6 +207,12 @@ public class OrderController {
             if (updateSuccess) {
                 result.put("code", 200);
                 result.put("msg", "订单状态更新成功");
+
+                // WebSocket 实时推送：小程序端支付(1)/取消(3)后，商家端和小程序端同步更新
+                Map<String, Object> pushData = new HashMap<>();
+                pushData.put("orderId", orderId);
+                pushData.put("payStatus", payStatus);
+                OrderWebSocketHandler.broadcast("status_change", pushData);
             } else {
                 result.put("code", 500);
                 result.put("msg", "订单状态更新失败");
@@ -321,6 +335,16 @@ public class OrderController {
                 result.put("code", 200);
                 result.put("msg", "状态更新成功");
                 result.put("success", true);
+
+                // WebSocket 实时推送状态变更：商家后台 + 小程序端同步更新
+                Map<String, Object> pushData = new HashMap<>();
+                pushData.put("orderId", id);
+                pushData.put("status", status);
+                // 数字状态码：小程序端按数字映射，避免两端字符串定义不一致
+                Map<String, Integer> payStatusMap = Map.of(
+                        "pending", 0, "processing", 1, "completed", 2, "cancelled", 3);
+                pushData.put("payStatus", payStatusMap.getOrDefault(status, -1));
+                OrderWebSocketHandler.broadcast("status_change", pushData);
             } else {
                 result.put("code", 400);
                 result.put("msg", "状态更新失败：订单不存在或状态值无效");

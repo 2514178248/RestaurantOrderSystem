@@ -9,6 +9,12 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true
+      },
+      // WebSocket 订单实时推送代理
+      '/ws': {
+        target: 'http://localhost:8080',
+        ws: true,
+        changeOrigin: true
       }
     }
   }
