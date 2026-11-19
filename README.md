@@ -65,7 +65,7 @@
 │  frontend-miniprogram │         │     admin-web        │
 │  微信开发者工具运行     │         │  npm run dev :5173   │
 └─────────┬────────────┘         └──────────┬───────────┘
-          │ https://host:8080/api/*         │ /api/* (vite proxy → 8080)
+          │ http://host:8080/api/* (自动探测) │ /api/* (vite proxy → 8080)
           │                                 │
           └──────────────┬──────────────────┘
                          ▼
@@ -96,7 +96,7 @@ RestaurantOrderSystem/
 │   ├── components/
 │   ├── images/
 │   ├── utils/
-│   │   ├── config.js          # ★ 后端 baseUrl，需要改成本机地址
+│   │   ├── config.js          # ★ 后端地址自动发现（局域网探测 /api/ping，一般无需改）
 │   │   ├── api.js
 │   │   ├── http.js
 │   │   └── storage.js
@@ -202,19 +202,19 @@ npm run dev
 
 1. 打开 **微信开发者工具** → 导入项目 → 选择目录 `frontend-miniprogram/`
 2. AppID 可以使用测试号，或填你自己的小程序 AppID
-   （项目里默认写的是 `wx0fc00aa8e117656c`，对应后端 `application.properties` 里的 `wx.app-secret`，公开仓库里建议替换成你自己的）
-3. 修改后端地址：打开 `frontend-miniprogram/utils/config.js`
-   ```js
-   const baseUrl = 'http://127.0.0.1:8080';   // 电脑上跑后端就写 127.0.0.1
-   // 真机调试时改成电脑在局域网的 IP，例如 'http://192.168.x.x:8080'
-   ```
+   （项目里默认写的是作者的小程序 AppID，导入时会提示替换；后端 `application.properties` 里的
+   `wx.app-id` / `wx.app-secret` 已脱敏为 `YOUR_WX_APPID` / `YOUR_WX_APP_SECRET` 占位符）
+3. 后端地址**无需手动配置**：`frontend-miniprogram/utils/config.js` 会自动在局域网内探测后端
+   （并发探测各候选 IP 的 `/api/ping`，命中后缓存，网络切换时自动重扫）。
+   电脑上用开发者工具直接编译即可；真机调试只要手机和电脑在同一局域网，同样无需改代码。
 4. 编译预览即可。
 
 > 注意：微信开发者工具 → 详情 → 本地设置，要勾选 **「不校验合法域名 / TLS 版本以及 HTTPS 证书」**，否则 http 请求会被拦。
 
 ### 步骤 5（可选）：微信登录真机能跑通需要做的事
 
-小程序里的 `wx.login` 换 openid 依赖后端 `WxUtil` 调微信官方接口，需要有效的 `wx.app-id` + `wx.app-secret`。
+小程序里的 `wx.login` 换 openid 依赖后端 `WxUtil` 调微信官方接口，需要有效的 `wx.app-id` + `wx.app-secret`
+（仓库里目前是 `YOUR_WX_APPID` / `YOUR_WX_APP_SECRET` 占位符，请替换成你自己的，测试号凭据也可以）。
 如果你只是想跑通菜单、加购、下单流程，不接真实微信登录，可以在小程序里直接点登录按钮走 mock 分支，或在后端把 `/api/user/openid` 临时返回一个固定 openid。
 
 ---
@@ -225,8 +225,8 @@ npm run dev
 | --- | --- | --- | --- |
 | `backend-springboot/src/main/resources/application.properties` | `spring.datasource.url` | `jdbc:mysql://localhost:3306/bishe` | 改 MySQL 地址/库名 |
 | 同上 | `spring.datasource.username` / `password` | `root` / `123456789` | 改成你本机的 MySQL 账号 |
-| 同上 | `wx.app-id` / `wx.app-secret` | 作者的小程序凭据 | **公开仓库请务必替换成自己的** |
-| `frontend-miniprogram/utils/config.js` | `baseUrl` | `http://172.20.10.3:8080` | 改成后端实际地址 |
+| 同上 | `wx.app-id` / `wx.app-secret` | `YOUR_WX_APPID` / `YOUR_WX_APP_SECRET`（占位符） | 跑通真实微信登录需替换成自己的凭据；不配也能跑菜单/下单 |
+| `frontend-miniprogram/utils/config.js` | 后端地址 | 自动发现（缓存优先） | 局域网自动探测 `/api/ping`，换网络无需改代码 |
 | `admin-web/vite.config.js` | `server.proxy./api.target` | `http://localhost:8080` | 后端不在本机时改这里 |
 | `frontend-miniprogram/project.config.json` | `appid` | 作者的 appid | 导入开发者工具时会提示替换 |
 
@@ -254,7 +254,8 @@ npm run dev
 → 微信开发者工具 → 详情 → 本地设置 → 勾选「不校验合法域名…」。
 
 **Q3：小程序真机调试白屏/请求不通**
-→ 手机和电脑必须在同一局域网，且 `config.js` 里的 `baseUrl` 要写电脑的局域网 IP（`ipconfig` 查），不能写 `127.0.0.1`。
+→ 手机和电脑必须在同一局域网（`config.js` 会自动探测电脑 IP，无需手动写死 `baseUrl`）。
+若探测不到：检查手机热点是否开了「AP 隔离」（需关闭），以及电脑防火墙是否放行 8080 端口。
 
 **Q4：商家后台登录报 401**
 → `vue_user` 表里没有该账号，去 `/register` 注册一个，或确认后端已连上 `bishe` 库。
