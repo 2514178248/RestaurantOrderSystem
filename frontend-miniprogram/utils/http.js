@@ -3,7 +3,7 @@
  * 用于处理所有的API请求
  */
 
-const { apiBaseUrl: API_BASE_URL } = require('./config');
+const config = require('./config');
 
 const HttpRequest = {
   /**
@@ -82,9 +82,22 @@ const HttpRequest = {
    * 通用请求方法
    */
   request(method, endpoint, data, options = {}) {
+    // 先确保后端地址已发现（换网络后会自动重新探测）
+    return config.ensureServer().then((baseUrl) => {
+      if (!baseUrl) {
+        return Promise.reject({
+          message: '未找到后端服务，请确认电脑已启动后端，且手机与电脑连接同一局域网'
+        });
+      }
+      return this.send(method, baseUrl + '/api' + endpoint, data, options);
+    });
+  },
+
+  /**
+   * 实际发起请求
+   */
+  send(method, url, data, options = {}) {
     return new Promise((resolve, reject) => {
-      // 拼接完整URL（基础地址 + 接口路径）
-      const url = API_BASE_URL + endpoint;
       const header = {
         'Content-Type': 'application/json',
         ...options.header

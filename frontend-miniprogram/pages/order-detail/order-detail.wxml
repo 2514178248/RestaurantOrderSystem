@@ -1,5 +1,6 @@
 <!--order-detail.wxml 订单详情页-->
-<!--顶部卡片-->
+<navigation-bar title="订单详情" back="{{true}}" background="#F7F4EC" color="#23281F"></navigation-bar>
+<!--顶部占位（保留节点，样式已置空）-->
 <view class="top-card"></view>
 <scroll-view class="scrollarea" scroll-y type="list" wx:if="{{order}}">
   <!-- 订单状态 -->
@@ -7,7 +8,8 @@
     <view class="statuscard pending">
       <view class="statusicon">👨‍🍳</view>
       <view class="statustitle">待支付</view>
-      <view class="statusdesc">请劓10分钟内完成支付</view>
+      <view class="statusrule"></view>
+      <view class="statusdesc">请在10分钟内完成支付</view>
     </view>
   </view>
 
@@ -15,6 +17,7 @@
     <view class="statuscard paid">
       <view class="statusicon">👨‍🍳</view>
       <view class="statustitle">待接单</view>
+      <view class="statusrule"></view>
       <view class="statusdesc">商家正在准备中</view>
     </view>
   </view>
@@ -23,6 +26,7 @@
     <view class="statuscard completed">
       <view class="statusicon">👨‍🍳</view>
       <view class="statustitle">已完成</view>
+      <view class="statusrule"></view>
       <view class="statusdesc">订单已完成</view>
     </view>
   </view>
@@ -31,6 +35,7 @@
     <view class="statuscard cancelled">
       <view class="statusicon">👨‍🍳</view>
       <view class="statustitle">已取消</view>
+      <view class="statusrule"></view>
       <view class="statusdesc">订单已取消</view>
     </view>
   </view>
@@ -38,7 +43,7 @@
   <!-- 订单信息 -->
   <view class="section orderinfo">
     <view class="sectiontitle">订单信息</view>
-    <view class="inforow">
+    <view class="inforow ordernorow">
       <view class="infolabel">订单号</view>
       <view class="infovalue">
         <text>{{order.orderNo}}</text>
@@ -63,7 +68,7 @@
         <text class="mealicon">📍</text>
         <view class="mealcontent">
           <view class="meallabel">取餐地点</view>
-          <view class="mealvalue">{{order.mealLocation.location || '食埩2齐5楼取餐点'}}</view>
+          <view class="mealvalue">{{order.mealLocation.location || '食堂3楼取餐点'}}</view>
         </view>
       </view>
       <view class="mealitem" wx:if="{{order.mealLocation.phone}}">

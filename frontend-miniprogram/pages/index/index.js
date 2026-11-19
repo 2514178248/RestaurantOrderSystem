@@ -1,6 +1,7 @@
 // index.js
 const Storage = require('../../utils/storage');
-const { apiBaseUrl } = require('../../utils/config');
+const config = require('../../utils/config');
+const WS = require('../../utils/websocket');
 const app = getApp();
 
 Page({
@@ -21,21 +22,52 @@ Page({
   onLoad() {
     // 页面加载时直接加载菜品列表
     this.loadGoodsList();
+    // 绑定 this 后再交给 WS 模块，保证回调里能访问页面实例
+    this._wsHandler = this.handleWsMessage.bind(this);
   },
 
   onShow() {
-    // 页面显示时刷新购物车数据
-    this.updateCartBadge();
+    // 页面显示时同步一次角标（兜底冷启动恢复购物车的场景）
+    Storage.syncCartBadge(Storage.getCart());
+    // 订阅推送：商家上下架菜品后本页自动刷新
+    WS.subscribe(this._wsHandler);
+  },
+
+  onHide() {
+    WS.unsubscribe(this._wsHandler);
+  },
+
+  onUnload() {
+    WS.unsubscribe(this._wsHandler);
+  },
+
+  /**
+   * WebSocket 推送回调：菜品上下架变更时自动刷新菜品列表
+   */
+  handleWsMessage(msg) {
+    if (msg.type !== 'dish_change') return;
+    this.loadGoodsList();
   },
 
   // 加载商品列表
   loadGoodsList() {
     this.setData({ loading: true });
-    // 调用后端接口获取菜品列表
-    wx.request({
-      url: `${apiBaseUrl}/dishes`,
-      method: 'GET',
-      success: res => {
+    // 先确保后端地址已发现（换网络后自动重新探测），再请求菜品列表
+    config.ensureServer()
+      .then((baseUrl) => {
+        if (!baseUrl) {
+          return Promise.reject(new Error('未找到后端服务'));
+        }
+        return new Promise((resolve, reject) => {
+          wx.request({
+            url: `${baseUrl}/api/dishes`,
+            method: 'GET',
+            success: resolve,
+            fail: reject
+          });
+        });
+      })
+      .then(res => {
         const goodsList = res.data.map(item => ({
           id: item.id,
           name: item.name,
@@ -50,12 +82,11 @@ Page({
           filteredGoodsList: goodsList,
           loading: false
         });
-      },
-      fail: () => {
+      })
+      .catch(() => {
         wx.showToast({ title: '获取菜品失败', icon: 'none' });
         this.setData({ loading: false });
-      }
-    });
+      });
   },
 
   // 搜索输入
@@ -126,14 +157,11 @@ Page({
       });
     }
 
-    // 保存到本地存储
+    // 保存到本地存储（setCart 内部已同步刷新 tabBar 角标）
     Storage.setCart(cart);
 
     // 更新全局数据
     app.globalData.cart = cart;
-
-    // 更新购物车角标
-    this.updateCartBadge();
 
     // 显示提示
     wx.showToast({
@@ -141,22 +169,5 @@ Page({
       icon: 'success',
       duration: 1500
     });
-  },
-
-  // 更新购物车角标
-  updateCartBadge() {
-    const cart = Storage.getCart();
-    const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-
-    if (totalCount > 0) {
-      wx.setTabBarBadge({
-        index: 1,
-        text: totalCount.toString()
-      });
-    } else {
-      wx.removeTabBarBadge({
-        index: 1
-      });
-    }
   }
 });

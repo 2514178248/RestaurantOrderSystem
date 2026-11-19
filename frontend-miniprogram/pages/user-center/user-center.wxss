@@ -1,154 +1,170 @@
-/**user-center.wxss*/
-.top-card{
-  margin-bottom:0 ;
-  background-color:#ffd84a ;
-  height: 100px;
-  width: 100vh;
-}
+/**user-center.wxss —— B1「菜单编辑部」*/
+
 page {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.page {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f5f5f5;
+  background: var(--paper);
 }
 
 .scrollarea {
   flex: 1;
-  overflow-y: hidden;
+  min-height: 0;
 }
 
-/* 用户信息 */
+/* 用户信息：编辑部头部 */
 .userprofile {
-  background: linear-gradient(135deg, #ffd84a 0%, #0a0a09 100%);
-  padding: 30rpx 20rpx;
-  color: #fff;
+  padding: 28rpx 32rpx 24rpx;
+  border-bottom: 2rpx solid var(--ink);
+}
+
+.profile-kicker {
+  margin-bottom: 20rpx;
 }
 
 .profilecard {
   display: flex;
   align-items: center;
-  gap: 20rpx;
+  gap: 24rpx;
 }
 
 .avatar {
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.3);
-  border: 3rpx solid rgba(255, 255, 255, 0.5);
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 4rpx;
+  background-color: #E9E4D8;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
 }
 
 .userinfo {
   flex: 1;
+  min-width: 0;
 }
 
 .nickname {
-  font-size: 32rpx;
-  font-weight: bold;
-  margin-bottom: 5rpx;
+  font-family: Georgia, 'Songti SC', serif;
+  font-size: 44rpx;
+  line-height: 1.25;
+  color: var(--green-deep);
+  letter-spacing: 2rpx;
 }
 
 .userstatus {
-  font-size: 24rpx;
-  opacity: 0.9;
+  font-size: 20rpx;
+  letter-spacing: 2rpx;
+  color: var(--muted);
+  margin-top: 8rpx;
 }
 
-/* 订单统计 */
+/* 订单统计：行式，虚线竖分隔 */
 .orderstats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15rpx;
-  padding: 20rpx;
-  background-color: #fff;
-  margin: 15rpx;
-  border-radius: 12rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  display: flex;
+  margin: 0 32rpx;
+  padding: 28rpx 0;
+  border-bottom: 1px dashed var(--line);
 }
 
 .statitem {
+  flex: 1;
   text-align: center;
-  padding: 20rpx 10rpx;
-  border-radius: 8rpx;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  border-right: 1px dashed var(--line);
 }
 
-.statitem:active {
-  background-color: #f5f5f5;
+.statitem:last-child {
+  border-right: none;
 }
 
 .statcount {
-  font-size: 32rpx;
-  color: #1296db;
-  font-weight: bold;
-  margin-bottom: 8rpx;
+  font-family: Georgia, 'Songti SC', serif;
+  font-size: 40rpx;
+  line-height: 1.1;
+  color: var(--green);
 }
 
 .statlabel {
-  font-size: 22rpx;
-  color: #666;
+  font-size: 20rpx;
+  letter-spacing: 2rpx;
+  color: var(--muted);
+  margin-top: 8rpx;
+}
+
+.statitem:active .statcount {
+  color: var(--gold);
 }
 
 /* 订单查询 */
 .searchsection {
-  background-color: #fff;
-  margin: 15rpx;
-  border-radius: 12rpx;
-  padding: 20rpx;
+  padding: 32rpx 32rpx 28rpx;
+  border-bottom: 1px dashed var(--line);
 }
 
 .sectiontitle {
+  font-family: Georgia, 'Songti SC', serif;
   font-size: 28rpx;
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 15rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+  color: var(--green-deep);
+  margin-bottom: 16rpx;
 }
 
 .searchbox {
   display: flex;
-  gap: 10rpx;
+  align-items: flex-end;
+  gap: 24rpx;
 }
 
 .searchinput {
   flex: 1;
-  padding: 12rpx 15rpx;
-  background-color: #f5f5f5;
-  border: 1rpx solid #eee;
-  border-radius: 8rpx;
+  min-width: 0;
+  height: 72rpx;
+  padding: 0 4rpx;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  font-family: Consolas, 'Courier New', monospace;
   font-size: 26rpx;
+  color: var(--ink);
 }
 
 .searchbtn {
-  padding: 12rpx 30rpx;
-  background-color: #1296db;
+  flex-shrink: 0;
+  height: 64rpx;
+  line-height: 64rpx;
+  padding: 0 28rpx;
+  background: var(--green);
   color: #fff;
-  border-radius: 8rpx;
-  font-size: 26rpx;
-  font-weight: bold;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 2rpx;
+  font-size: 24rpx;
+  letter-spacing: 2rpx;
+  text-align: center;
 }
 
-/* 功能菜单 */
+/* 功能菜单：行式 */
 .menusection {
-  margin: 15rpx;
+  padding: 30rpx 32rpx 0;
+  border-bottom: 1px dashed var(--line);
+}
+
+.menu-kicker {
+  color: var(--gold);
+  margin-bottom: 8rpx;
 }
 
 .menugroup {
-  background-color: #fff;
-  border-radius: 12rpx;
-  overflow: hidden;
+  background: transparent;
 }
 
 .menuitem {
   display: flex;
   align-items: center;
-  padding: 20rpx 20rpx;
-  border-bottom: 1rpx solid #eee;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  height: 96rpx;
+  border-bottom: 1px dashed var(--line);
 }
 
 .menuitem:last-child {
@@ -156,43 +172,50 @@ page {
 }
 
 .menuitem:active {
-  background-color: #f5f5f5;
+  background: rgba(35, 40, 31, 0.03);
 }
 
 .menuicon {
-  font-size: 32rpx;
-  margin-right: 15rpx;
+  display: none;
 }
 
 .menutitle {
   flex: 1;
+  min-width: 0;
   font-size: 28rpx;
-  color: #333;
+  color: var(--ink);
+  letter-spacing: 1rpx;
 }
 
 .menuarrow {
-  color: #ccc;
-  font-size: 24rpx;
+  width: 14rpx;
+  height: 14rpx;
+  font-size: 0;
+  color: transparent;
+  border-top: 2rpx solid var(--gold);
+  border-right: 2rpx solid var(--gold);
+  transform: rotate(45deg);
+  margin-right: 10rpx;
+  flex-shrink: 0;
 }
 
 /* 登出按钮 */
 .logoutsection {
-  padding: 20rpx;
-  margin: 30rpx 15rpx;
+  padding: 48rpx 32rpx calc(48rpx + env(safe-area-inset-bottom));
 }
 
 .logoutbtn {
-  padding: 20rpx;
-  background-color: #ff6b6b;
-  color: #fff;
-  border-radius: 50rpx;
-  font-size: 28rpx;
-  font-weight: bold;
+  height: 88rpx;
+  line-height: 88rpx;
   text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  border: 1rpx solid var(--stamp-red);
+  color: var(--stamp-red);
+  background: transparent;
+  border-radius: 4rpx;
+  font-size: 28rpx;
+  letter-spacing: 4rpx;
 }
 
 .logoutbtn:active {
-  background-color: #ff5252;
+  background: rgba(181, 72, 47, 0.06);
 }

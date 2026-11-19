@@ -1,6 +1,7 @@
 // app.js
 const Storage = require('./utils/storage');
 const API = require('./utils/api');
+const config = require('./utils/config');
 
 App({
   globalData: {
@@ -10,6 +11,9 @@ App({
   },
 
   onLaunch() {
+    // 启动即开始探测后端地址，避免首个请求等待
+    config.ensureServer().catch(() => {});
+
     // 初始化购物车数据
     const cart = Storage.getCart();
     if (cart && cart.length > 0) {

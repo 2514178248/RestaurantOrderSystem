@@ -1,7 +1,16 @@
 <!-- pages/cart/cart.wxml -->
 <view class="page">
-  <!--顶部卡片-->
-  <view class="top-card"></view>
+  <navigation-bar title="食光小馆" back="{{false}}" background="#F7F4EC" color="#23281F"></navigation-bar>
+  <!-- 编辑部头部 -->
+  <view class="editorial-head u-editorial-head">
+    <view class="u-kicker">SHIGUANG · CART</view>
+    <view class="editorial-title u-editorial-title">购物车</view>
+    <view class="editorial-meta u-editorial-meta">
+      <text>点好的菜都在这里</text>
+      <text>食光小馆</text>
+    </view>
+  </view>
+  <view class="u-rule-strong"></view>
   <view wx:if="{{cartList.length === 0}}" class="empty-cart">
     <view class="empty-icon">🛒</view>
     <view class="empty-title">购物车还是空的</view>
@@ -10,10 +19,6 @@
   </view>
 
   <view wx:else class="cart-content">
-    <view class="cart-nav">
-      <text class="cart-title">购物车</text>
-    </view>
-
     <view class="cart-header">
       <label class="header-left" catchtap="toggleSelectAll">
         <view class="select-circle {{selectedAll ? 'active' : ''}}"></view>

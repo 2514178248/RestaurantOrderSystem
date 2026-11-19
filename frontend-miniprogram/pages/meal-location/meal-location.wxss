@@ -1,145 +1,128 @@
-/**meal-location.wxss*/
-.top-card{
-  margin-bottom:0 ;
-  background-color:#ffd84a ;
-  height: 100px;
-  width: 100vh;
-}
+/**meal-location.wxss —— B1「菜单编辑部」*/
+
 page {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.page {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f5f5f5;
+  background: var(--paper);
+}
+
+/* 头部墨线 */
+.page-rule {
+  height: 2rpx;
+  background: var(--ink);
+  margin: 20rpx 32rpx 0;
 }
 
 .scrollarea {
   flex: 1;
-  overflow-y: hidden;
-  padding-bottom: 100rpx;
+  min-height: 0;
 }
 
+/* 底部留白交给滚动内容本身，避免部分内核下 scroll-view 的 padding 不进入滚动区 */
 .formsection {
-  background-color: #fff;
-  margin: 20rpx;
-  border-radius: 12rpx;
-  padding: 30rpx;
-  margin-top: 20rpx;
+  padding: 8rpx 32rpx calc(200rpx + env(safe-area-inset-bottom));
+  background: transparent;
 }
 
 .formgroup {
-  margin-bottom: 40rpx;
-}
-
-.formgroup:last-of-type {
-  margin-bottom: 30rpx;
+  padding-bottom: 8rpx;
 }
 
 .formlabel {
-  font-size: 28rpx;
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 15rpx;
-  display: block;
+  font-size: 22rpx;
+  letter-spacing: 4rpx;
+  color: var(--muted);
+  margin: 28rpx 0 4rpx;
 }
 
-/* 地点选项 */
+/* 地点选项：行式 */
 .locationoptions {
   display: flex;
   flex-direction: column;
-  gap: 12rpx;
 }
 
 .locationitem {
   display: flex;
   align-items: center;
-  padding: 15rpx 20rpx;
-  background-color: #f9f9f9;
-  border-radius: 8rpx;
-  border: 2rpx solid #eee;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  height: 104rpx;
+  border-bottom: 1px dashed var(--line);
 }
 
-.locationitem.active {
-  background-color: #e8f4fd;
-  border-color: #1296db;
+.locationitem:last-child {
+  border-bottom: none;
+}
+
+.locationitem:active {
+  background: rgba(35, 40, 31, 0.03);
 }
 
 .checkbox {
-  width: 24rpx;
-  height: 24rpx;
-  border: 2rpx solid #ddd;
-  border-radius: 50%;
-  margin-right: 12rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 8rpx;
+  height: 8rpx;
+  background: transparent;
+  margin-right: 20rpx;
   flex-shrink: 0;
 }
 
 .locationitem.active .checkbox {
-  background-color: #1296db;
-  border-color: #1296db;
-}
-
-.locationitem.active .checkbox::after {
-  content: '✓';
-  color: #fff;
-  font-size: 16rpx;
-  line-height: 1;
+  background: var(--green);
 }
 
 .locationitem text {
-  font-size: 26rpx;
-  color: #333;
   flex: 1;
+  min-width: 0;
+  font-size: 28rpx;
+  letter-spacing: 1rpx;
+  color: var(--ink);
 }
 
 .locationitem.active text {
-  color: #1296db;
-  font-weight: bold;
+  color: var(--green);
+  font-weight: 700;
 }
 
-/* 表单输入 */
+/* 表单输入：下划线 + 等宽 */
 .forminputgroup {
   position: relative;
 }
 
 .forminput {
   width: 100%;
-  padding: 15rpx 20rpx;
-  background-color: #f9f9f9;
-  border: 1rpx solid #eee;
-  border-radius: 8rpx;
-  font-size: 26rpx;
-  color: #333;
+  height: 88rpx;
+  padding: 0 4rpx;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 28rpx;
+  color: var(--ink);
 }
 
-.forminput:focus {
-  background-color: #fff;
-  border-color: #1296db;
-}
-
-/* 提示框 */
+/* 提示 */
 .tipbox {
   display: flex;
   align-items: flex-start;
   gap: 12rpx;
-  padding: 15rpx 20rpx;
-  background-color: #f0f8ff;
-  border-radius: 8rpx;
-  border-left: 4rpx solid #1296db;
+  padding: 24rpx 0 8rpx;
+  margin-top: 32rpx;
+  border-top: 1px dashed var(--line);
 }
 
 .tipicon {
-  font-size: 28rpx;
-  flex-shrink: 0;
+  display: none;
 }
 
 .tiptext {
-  font-size: 24rpx;
-  color: #666;
-  line-height: 1.6;
+  font-size: 22rpx;
+  line-height: 1.7;
+  color: var(--muted);
+  letter-spacing: 1rpx;
 }
 
 /* 操作栏 */
@@ -149,29 +132,34 @@ page {
   left: 0;
   right: 0;
   display: flex;
-  gap: 15rpx;
-  padding: 20rpx;
-  background-color: #fff;
-  border-top: 1rpx solid #eee;
+  gap: 20rpx;
+  padding: 20rpx 32rpx calc(20rpx + env(safe-area-inset-bottom));
+  background: var(--paper);
+  border-top: 1px solid var(--line);
 }
 
 .btn {
   flex: 1;
-  padding: 20rpx;
-  border-radius: 50rpx;
-  font-size: 28rpx;
-  font-weight: bold;
+  height: 88rpx;
+  line-height: 88rpx;
   text-align: center;
-  border: none;
+  border-radius: 0;
+  font-size: 28rpx;
+  letter-spacing: 4rpx;
 }
 
 .btncancel {
-  background-color: #f5f5f5;
-  color: #666;
-  border: 1rpx solid #ddd;
+  background: transparent;
+  border: 1px solid var(--green);
+  color: var(--green);
 }
 
 .btnconfirm {
-  background-color: #1296db;
+  background: var(--green);
   color: #fff;
+  font-family: Georgia, 'Songti SC', serif;
+}
+
+.btn:active {
+  opacity: 0.85;
 }

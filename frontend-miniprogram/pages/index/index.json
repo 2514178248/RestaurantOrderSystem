@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "馈影点点"
+  "navigationBarTitleText": "馈影点点",
+  "usingComponents": {
+    "navigation-bar": "/components/navigation-bar/navigation-bar"
+  }
 }

@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
                 // 🔥 核心修复：用 allowedOriginPatterns 替代 allowedOrigins
                  .allowedOriginPatterns(
                         "http://localhost:5173", "http://localhost:5174", "http://localhost:8080",
-                        "http://192.168.0.57:5173", "http://192.168.0.57:5174", "http://192.168.0.57:8080")
+                        "http://172.20.10.2:5173", "http://172.20.10.2:5174", "http://172.20.10.2:8080")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true)

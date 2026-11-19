@@ -11,8 +11,8 @@
     "pages/user-center/user-center"
   ],
   "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#1296db",
+    "color": "#8B857A",
+    "selectedColor": "#2F4B3C",
     "backgroundColor": "#ffffff",
     "borderStyle": "black",
     "list": [

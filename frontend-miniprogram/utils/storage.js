@@ -38,11 +38,12 @@ const Storage = {
   },
 
   /**
-   * 保存购物车数据
+   * 保存购物车数据（写入存储后同步刷新 tabBar 购物车角标）
    */
   setCart(cartData) {
     try {
       wx.setStorageSync(this.CART_KEY, cartData);
+      this.syncCartBadge(cartData);
       return true;
     } catch (e) {
       console.error('保存购物车失败:', e);
@@ -51,15 +52,39 @@ const Storage = {
   },
 
   /**
-   * 清空购物车
+   * 清空购物车（同时移除角标）
    */
   clearCart() {
     try {
       wx.removeStorageSync(this.CART_KEY);
+      this.syncCartBadge([]);
       return true;
     } catch (e) {
       console.error('清空购物车失败:', e);
       return false;
+    }
+  },
+
+  /**
+   * 同步 tabBar 购物车角标（index:1 为购物车 tab）
+   * 角标规则：显示购物车内全部商品总件数，为 0 时移除角标。
+   * 购物车的所有写入都收口在 setCart/clearCart，页面无需各自维护角标逻辑。
+   */
+  syncCartBadge(cartData) {
+    try {
+      const list = Array.isArray(cartData) ? cartData : [];
+      const totalQuantity = list.reduce(
+        (sum, item) => sum + (Number(item && item.quantity) || 0),
+        0
+      );
+      if (totalQuantity > 0) {
+        wx.setTabBarBadge({ index: 1, text: String(totalQuantity) });
+      } else {
+        wx.removeTabBarBadge({ index: 1 });
+      }
+    } catch (e) {
+      // 角标刷新失败不影响数据写入（如 tabBar 尚未渲染时）
+      console.warn('同步购物车角标失败:', e);
     }
   },
 

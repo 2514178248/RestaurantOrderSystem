@@ -1,8 +1,17 @@
 <!--order-list.wxml 订单列表页-->
-<!--顶部卡片-->
+<navigation-bar title="食光小馆" back="{{true}}" background="#F7F4EC" color="#23281F"></navigation-bar>
+<!--顶部占位（保留节点，样式已置空）-->
 <view class="top-card"></view>
 <scroll-view class="scrollarea" scroll-y type="list">
+  <!-- 编辑部头部 -->
+  <view class="editorial-head u-editorial-head">
+    <view class="u-kicker">SHIGUANG · ORDERS</view>
+    <view class="editorial-title u-editorial-title">我的订单</view>
+  </view>
+  <view class="u-rule-strong"></view>
+
   <view wx:if="{{orders.length === 0}}" class="emptylist">
+    <view class="emptyrule"></view>
     <view class="emptyicon">📋</view>
     <view class="emptytext">暂无{{statusMap[status]}}订单</view>
     <view class="emptydesc">快去首页选购吧</view>
@@ -17,7 +26,7 @@
           <view class="orderid">{{item.orderNo}}</view>
           <view class="ordertime">{{item.createTimeText}}</view>
         </view>
-        <view class="orderstatus">{{statusMap[item.status]}}</view>
+        <view class="orderstatus {{item.status === 'cancelled' ? 'is-cancelled' : ''}}">{{statusMap[item.status]}}</view>
       </view>
 
       <!-- 商品列表 -->
@@ -35,7 +44,7 @@
       <view class="ordersummary">
         <view class="summarytotal">
           <text>合计：</text>
-          <text class="totalprice">¥{{item.totalPriceFormatted || item.totalPrice}}</text>
+          <text class="totalprice"><text class="rmb">¥</text>{{item.totalPriceFormatted || item.totalPrice}}</text>
         </view>
       </view>
 

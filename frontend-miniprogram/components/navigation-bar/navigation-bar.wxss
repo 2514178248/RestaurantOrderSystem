@@ -94,3 +94,13 @@
     transform: rotate(360deg);
   }
 }
+
+/* —— B1「菜单编辑部」主题覆写 —— */
+.weui-navigation-bar {
+  --weui-FG-0: #23281F;
+}
+.weui-navigation-bar__center {
+  font-family: Georgia, 'Songti SC', serif;
+  letter-spacing: 2px;
+  font-weight: 600;
+}

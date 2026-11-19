@@ -1,6 +1,5 @@
 <!--order-confirm.wxml 订单确认页-->
-<!--顶部卡片-->
-<view class="top-card"></view>
+<navigation-bar title="确认订单" back="{{true}}" background="#F7F4EC" color="#23281F"></navigation-bar>
 <scroll-view class="scrollarea" scroll-y type="list">
   <!-- 取餐信息 -->
   <view class="section meallocationsection">
@@ -8,7 +7,7 @@
     <view class="meallocationcard">
       <view class="locationinfo">
         <view class="locationlabel">取餐地点：</view>
-        <view class="locationvalue">{{mealLocation.location || '食垂3楼取餐点'}}</view>
+        <view class="locationvalue">{{mealLocation.location || '食堂3楼取餐点'}}</view>
       </view>
       <view wx:if="{{mealLocation.phone}}" class="phoneinfo">
         <view class="phonelabel">联系电话：</view>

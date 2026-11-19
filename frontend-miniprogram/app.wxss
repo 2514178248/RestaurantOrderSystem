@@ -1,10 +1,123 @@
-/**app.wxss**/
-.container {
-  height: 100%;
+/* app.wxss — B1「菜单编辑部」设计系统 */
+page {
+  /* —— 色彩 tokens —— */
+  --ink: #23281F;          /* 正文墨色 */
+  --green: #2F4B3C;        /* 品牌墨绿：选中/主按钮/价格 */
+  --green-deep: #1E3B2F;   /* 衬线大标题 */
+  --gold: #A9803E;         /* 点缀金：kicker/编号/短线 */
+  --paper: #F7F4EC;        /* 页面底色 */
+  --paper-2: #FDFBF5;      /* 卡片/输入底 */
+  --muted: #8B857A;        /* 次要文字 */
+  --line: #DDD6C4;         /* 细线 */
+  --line-strong: #23281F;  /* 粗墨规则线 */
+  --stamp-red: #B5482F;    /* 否定状态（取消/失效） */
+
+  background-color: var(--paper);
+  color: var(--ink);
+  font-size: 28rpx;
+}
+
+/* —— 字体基元 —— */
+.u-serif { font-family: Georgia, 'Songti SC', serif; }
+.u-mono  { font-family: Consolas, 'Courier New', monospace; }
+
+/* kicker：金色大写小字 */
+.u-kicker {
+  font-size: 20rpx;
+  letter-spacing: 6rpx;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* 页面编辑部头部容器 */
+.u-editorial-head { padding: 24rpx 32rpx 0; }
+.u-editorial-title {
+  font-family: Georgia, 'Songti SC', serif;
+  font-size: 56rpx;
+  color: var(--green-deep);
+  line-height: 1.25;
+  margin-top: 8rpx;
+}
+.u-editorial-meta {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: space-between;
-  padding: 200rpx 0;
-  box-sizing: border-box;
-} 
+  font-size: 20rpx;
+  color: var(--muted);
+  margin-top: 8rpx;
+}
+
+/* 规则线：粗墨线（头部下）与细线、虚线 */
+.u-rule-strong { height: 4rpx; background: var(--line-strong); opacity: .8; margin: 20rpx 32rpx 0; }
+.u-divider     { height: 1px;  background: var(--line); }
+.u-dashed      { border-top: 1px dashed var(--line); }
+
+/* 虚线引导价格：价格 —— — — */
+.u-leader-price { display: flex; align-items: baseline; }
+.u-leader-price .u-leader {
+  flex: 1;
+  border-bottom: 1px dotted #C4BDA9;
+  transform: translateY(-6rpx);
+  margin: 0 12rpx;
+}
+.u-price {
+  font-family: Georgia, serif;
+  font-weight: 700;
+  color: var(--green);
+}
+.u-price .u-rmb { font-size: 20rpx; margin-right: 2rpx; }
+
+/* 按钮 */
+.u-btn-main {
+  background: var(--green);
+  color: #fff;
+  border-radius: 4rpx;
+  font-family: Georgia, 'Songti SC', serif;
+  letter-spacing: 4rpx;
+  font-size: 30rpx;
+}
+.u-btn-main.disabled { background: var(--muted); color: var(--paper-2); }
+.u-btn-outline {
+  background: transparent;
+  border: 1px solid var(--green);
+  color: var(--green);
+  border-radius: 4rpx;
+  letter-spacing: 4rpx;
+}
+
+/* 加购描边方框钮 */
+.u-add-btn {
+  width: 44rpx;
+  height: 44rpx;
+  border: 1px solid var(--green);
+  color: var(--green);
+  border-radius: 4rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+}
+
+/* 状态描边标签 */
+.u-tag {
+  display: inline-block;
+  font-size: 20rpx;
+  padding: 4rpx 16rpx;
+  border: 1px solid var(--green);
+  color: var(--green);
+  border-radius: 4rpx;
+  letter-spacing: 2rpx;
+}
+.u-tag.u-tag-muted { border-color: var(--muted); color: var(--muted); }
+.u-tag.u-tag-red   { border-color: var(--stamp-red); color: var(--stamp-red); }
+
+/* 空态 */
+.u-empty { text-align: center; padding: 160rpx 0; color: var(--muted); }
+.u-empty-line { width: 64rpx; height: 2px; background: var(--gold); margin: 24rpx auto; }
+
+/* 表单输入：虚线下边线式 */
+.u-input-line {
+  border-bottom: 1px dashed var(--line);
+  padding: 16rpx 4rpx;
+  color: var(--ink);
+  background: transparent;
+}

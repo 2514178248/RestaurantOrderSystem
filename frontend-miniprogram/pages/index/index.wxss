@@ -1,179 +1,82 @@
-/* 搜索栏整体容器 */
-.searchcontainer {
-  width: 100%;
-  padding: 16rpx 0;
-  background: #f7f7f7;
-  display: flex;
-  justify-content: center;
-}
-
-/* 搜索框区域 */
-.searchbox {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: 32rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
-  padding: 8rpx 20rpx;
-  width: 90%;
-  margin: 0 auto;
-}
-
-/* 搜索图标 */
-.searchicon {
-  font-size: 32rpx;
-  color: #bbb;
-  margin-right: 12rpx;
-}
-
-/* 搜索输入框 */
-.searchinput {
-  flex: 1;
-  height: 48rpx;
-  border: none;
-  background: transparent;
-  font-size: 28rpx;
-  color: #333;
-  outline: none;
-}
-
-/* 清除按钮 */
-.clearicon {
-  font-size: 32rpx;
-  color: #bbb;
-  margin-left: 12rpx;
-  padding: 0 8rpx;
-  border-radius: 50%;
-  background: #f0f0f0;
-  line-height: 32rpx;
-  cursor: pointer;
-}
-/**index.wxss**/
+/* index.wxss — B1 编辑部风格 */
 page {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f5f5f5;
+  background-color: var(--paper);
 }
-.top-card{
-  margin-bottom:0 ;
-  background-color:#ffd84a ;
-  height: 100px;
-  width: 100vh;
-}
-.searchbox{
-  gap: 8rpx;
-}
-/* 分类导航 */
-.categorycontainer {
-  white-space: nowrap;
-  background-color: #fff;
-  border-bottom: 1rpx solid #eee;
-}
+.scrollarea { flex: 1; min-height: 0; }
 
-.categorylist {
+/* 搜索栏 */
+.searchcontainer { padding: 20rpx 32rpx 8rpx; }
+.searchbox {
   display: flex;
-  padding: 20rpx 0;
+  align-items: center;
+  gap: 12rpx;
+  border-bottom: 1px dashed var(--line);
+  padding: 14rpx 4rpx;
+}
+.searchicon { font-size: 28rpx; color: var(--muted); }
+.searchinput {
+  flex: 1;
+  height: 48rpx;
+  font-size: 28rpx;
+  color: var(--ink);
+  background: transparent;
+}
+.clearicon {
+  font-size: 30rpx;
+  color: var(--muted);
+  padding: 0 10rpx;
 }
 
+/* 分类导航：文字 tab + 选中短墨线 */
+.categorycontainer { white-space: nowrap; }
+.categorylist { display: flex; padding: 20rpx 32rpx 4rpx; gap: 36rpx; }
 .categoryitem {
-  display: inline-block;
-  padding: 10rpx 30rpx;
-  margin: 0 20rpx;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6rpx;
   font-size: 28rpx;
-  color: #666;
-  border-radius: 30rpx;
-  white-space: nowrap;
+  color: var(--muted);
 }
+.categoryitem.active { color: var(--green); font-weight: 800; }
+.categoryitem.active .catname { border-bottom: 4rpx solid var(--green); padding-bottom: 6rpx; }
 
-.categoryitem.active {
-  background-color: #ffd84a;
-  color: #fff;
-}
-
-/* 商品列表 */
-.goodscontainer {
-  padding: 20rpx;
-  min-height: 500rpx;
-}
-
-.loadingtext,
-.emptytext {
+/* 商品网格 */
+.goodscontainer { padding: 16rpx 32rpx 60rpx; min-height: 500rpx; }
+.loadingtext, .emptytext {
   text-align: center;
-  padding: 100rpx 0;
-  color: #999;
-  font-size: 28rpx;
+  padding: 120rpx 0;
+  color: var(--muted);
+  font-size: 26rpx;
 }
-
-.goodslist {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20rpx;
-}
-
-.goodsitem {
-  background-color: #fff;
-  border-radius: 16rpx;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
-}
-
+.emptytext .u-empty-line { margin-bottom: 24rpx; }
+.goodslist { display: grid; grid-template-columns: repeat(2, 1fr); gap: 36rpx 32rpx; }
+.goodsitem { display: flex; flex-direction: column; }
 .goodsimage {
   width: 100%;
   height: 300rpx;
-  background-color: #f0f0f0;
+  background-color: #E9E4D8;
+  border-radius: 4rpx;
+  filter: saturate(.92);
 }
-
-.goodsinfo {
-  padding: 20rpx;
-}
-
-.goodsname {
+.goodsinfo { padding: 16rpx 4rpx 0; }
+.goodsname { display: flex; justify-content: space-between; align-items: baseline; }
+.goodsname-text {
+  font-family: Georgia, 'Songti SC', serif;
   font-size: 30rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10rpx;
+  font-weight: 700;
+  color: var(--ink);
 }
-
+.goodsno { font-size: 20rpx; color: var(--gold); letter-spacing: 2rpx; }
 .goodsdesc {
-  font-size: 24rpx;
-  color: #999;
-  margin-bottom: 15rpx;
+  font-size: 22rpx;
+  color: var(--muted);
+  margin-top: 8rpx;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-.goodsprice {
-  display: flex;
-  align-items: baseline;
-}
-
-.pricesymbol {
-  font-size: 24rpx;
-  color: #ff6b35;
-  font-weight: bold;
-}
-
-.pricevalue {
-  font-size: 36rpx;
-  color: #ff6b35;
-  font-weight: bold;
-}
-
-.addcartbtn {
-  position: absolute;
-  right: 20rpx;
-  bottom: 20rpx;
-  width: 50rpx;
-  height: 50rpx;
-  background-color: #ffd84a;
-  color: #fff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 36rpx;
-  font-weight: bold;
-}
+.goodsprice { margin-top: 14rpx; }
+.goodsprice-value { font-size: 34rpx; }

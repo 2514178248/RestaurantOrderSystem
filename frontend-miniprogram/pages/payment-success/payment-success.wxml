@@ -1,3 +1,4 @@
+<navigation-bar title="支付成功" back="{{true}}" background="#F7F4EC" color="#23281F"></navigation-bar>
 <view class="successcontainer">
   <view class="successicon">✓</view>
   <view class="successtitle">支付成功</view>

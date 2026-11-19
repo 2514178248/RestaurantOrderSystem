@@ -1,5 +1,6 @@
 package com.example.cantingjiekou.controller;
 
+import com.example.cantingjiekou.config.OrderWebSocketHandler;
 import com.example.cantingjiekou.entity.Dish;
 import com.example.cantingjiekou.service.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +61,11 @@ public class DishController {
         
         boolean success = dishService.createDish(dish);
         if (success) {
+            // WebSocket 实时推送：商家新增菜品后，小程序端实时显示新菜品
+            Map<String, Object> pushData = new HashMap<>();
+            pushData.put("dishId", dish.getId());
+            pushData.put("status", dish.getStatus());
+            OrderWebSocketHandler.broadcast("dish_change", pushData);
             return Map.of("success", true, "message", "菜品创建成功");
         } else {
             return Map.of("success", false, "message", "菜品创建失败");
@@ -69,6 +76,11 @@ public class DishController {
     public Map<String, Object> deleteDish(@PathVariable Long id) {
         boolean success = dishService.deleteDish(id);
         if (success) {
+            // WebSocket 实时推送：菜品被删除，等同下架，小程序端实时移除
+            Map<String, Object> pushData = new HashMap<>();
+            pushData.put("dishId", id);
+            pushData.put("status", 0);
+            OrderWebSocketHandler.broadcast("dish_change", pushData);
             return Map.of("success", true, "message", "菜品删除成功");
         } else {
             return Map.of("success", false, "message", "菜品删除失败");
@@ -80,9 +92,14 @@ public class DishController {
         dish.setId(id);
         // 转换状态值
         dish.setStatus(convertStatus(dish.getStatus()));
-        
+
         boolean success = dishService.updateDish(dish);
         if (success) {
+            // WebSocket 实时推送：菜品信息（名称/价格/状态）变更后，小程序端实时刷新
+            Map<String, Object> pushData = new HashMap<>();
+            pushData.put("dishId", id);
+            pushData.put("status", dish.getStatus());
+            OrderWebSocketHandler.broadcast("dish_change", pushData);
             return Map.of("success", true, "message", "菜品更新成功");
         } else {
             return Map.of("success", false, "message", "菜品更新失败");
@@ -93,9 +110,14 @@ public class DishController {
     public Map<String, Object> updateDishStatus(@PathVariable Long id, @RequestBody Map<String, Object> request) {
         Object statusValue = request.get("status");
         Integer status = convertStatus(statusValue);
-        
+
         boolean success = dishService.updateDishStatus(id, status);
         if (success) {
+            // WebSocket 实时推送：商家上下架菜品后，小程序端实时显示/隐藏
+            Map<String, Object> pushData = new HashMap<>();
+            pushData.put("dishId", id);
+            pushData.put("status", status);
+            OrderWebSocketHandler.broadcast("dish_change", pushData);
             return Map.of("success", true, "message", "状态更新成功");
         } else {
             return Map.of("success", false, "message", "状态更新失败");

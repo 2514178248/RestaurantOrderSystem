@@ -8,14 +8,15 @@
  *   onHide()  { WS.unsubscribe(this.handleWsMessage); }
  *   handleWsMessage(msg) { if (msg.type === 'status_change') { ... } }
  */
-const { baseUrl } = require('./config');
+const config = require('./config');
 
-// http://192.168.0.57:8080 → ws://192.168.0.57:8080/ws/orders
-const WS_URL = baseUrl.replace(/^http/, 'ws') + '/ws/orders';
+// http://172.20.10.2:8080 → ws://172.20.10.2:8080/ws/orders（地址由 config 自动发现）
+const WS_PATH = '/ws/orders';
 
 const RECONNECT_DELAY = 5000; // 断线重连间隔（毫秒）
 
 let socketTask = null;
+let connecting = false;      // 正在探测后端地址
 let listeners = new Set();   // 已订阅的页面回调
 let reconnectTimer = null;
 
@@ -23,36 +24,46 @@ let reconnectTimer = null;
  * 建立 WebSocket 连接（幂等：已连接/连接中则跳过）
  */
 function connect() {
-  if (socketTask) return;
+  if (socketTask || connecting) return;
 
-  socketTask = wx.connectSocket({
-    url: WS_URL,
-    fail: (err) => {
-      console.warn('[WS] 连接发起失败:', err);
+  connecting = true;
+  config.ensureServer().then((baseUrl) => {
+    connecting = false;
+    if (!baseUrl || socketTask) return;
+
+    const wsUrl = baseUrl.replace(/^http/, 'ws') + WS_PATH;
+    socketTask = wx.connectSocket({
+      url: wsUrl,
+      fail: (err) => {
+        console.warn('[WS] 连接发起失败:', err);
+        socketTask = null;
+        scheduleReconnect();
+      }
+    });
+    if (!socketTask) return;
+
+    socketTask.onMessage((res) => {
+      try {
+        const msg = JSON.parse(res.data);
+        listeners.forEach((fn) => {
+          try { fn(msg); } catch (e) { console.error('[WS] 回调执行异常:', e); }
+        });
+      } catch (e) {
+        // 非 JSON 消息忽略
+      }
+    });
+
+    socketTask.onClose(() => {
       socketTask = null;
       scheduleReconnect();
-    }
-  });
-  if (!socketTask) return;
+    });
 
-  socketTask.onMessage((res) => {
-    try {
-      const msg = JSON.parse(res.data);
-      listeners.forEach((fn) => {
-        try { fn(msg); } catch (e) { console.error('[WS] 回调执行异常:', e); }
-      });
-    } catch (e) {
-      // 非 JSON 消息忽略
-    }
-  });
-
-  socketTask.onClose(() => {
-    socketTask = null;
+    socketTask.onError(() => {
+      socketTask = null;
+    });
+  }).catch(() => {
+    connecting = false;
     scheduleReconnect();
-  });
-
-  socketTask.onError(() => {
-    socketTask = null;
   });
 }
 

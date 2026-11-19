@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "取餐信息"
+  "navigationBarTitleText": "取餐信息",
+  "usingComponents": {
+    "navigation-bar": "/components/navigation-bar/navigation-bar"
+  }
 }

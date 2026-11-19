@@ -1,121 +1,144 @@
-/**order-list.wxss*/
-.top-card{
-  margin-bottom:0 ;
-  background-color:#ffd84a ;
-  height: 100px;
-  width: 100vh;
-}
+/**order-list.wxss — B1「菜单编辑部」订单列表*/
 page {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f5f5f5;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, 'PingFang SC', sans-serif;
+}
+
+/* 旧的顶部色块占位：保留节点，仅隐藏 */
+.top-card {
+  display: none;
 }
 
 .scrollarea {
   flex: 1;
+  min-height: 0;
   overflow-y: hidden;
 }
 
-/* 空列表 */
+/* 编辑部头部沿用 app.wxss 的 .u-editorial-head / .u-editorial-title */
+
+/* 空列表：金色短线 + 素字 */
 .emptylist {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 500rpx;
-  padding: 40rpx 20rpx;
+  min-height: 600rpx;
+  padding: 120rpx 48rpx;
   text-align: center;
 }
 
+.emptyrule {
+  width: 64rpx;
+  height: 4rpx;
+  background: var(--gold);
+  margin-bottom: 28rpx;
+}
+
 .emptyicon {
-  font-size: 120rpx;
-  margin-bottom: 20rpx;
-  opacity: 0.5;
+  display: none;
 }
 
 .emptytext {
-  font-size: 32rpx;
-  color: #333;
-  margin-bottom: 10rpx;
-  font-weight: bold;
+  font-family: Georgia, 'Songti SC', serif;
+  font-size: 26rpx;
+  color: var(--muted);
+  letter-spacing: 1rpx;
+  margin-bottom: 12rpx;
 }
 
 .emptydesc {
-  font-size: 24rpx;
-  color: #999;
+  font-size: 22rpx;
+  color: var(--muted);
+  opacity: .85;
   margin-bottom: 40rpx;
 }
 
 .emptybtn {
-  padding: 20rpx 60rpx;
-  background-color: #1296db;
+  padding: 16rpx 52rpx;
+  background: var(--green);
   color: #fff;
-  border-radius: 50rpx;
-  font-size: 28rpx;
+  border-radius: 2rpx;
+  font-size: 24rpx;
+  font-family: Georgia, 'Songti SC', serif;
+  letter-spacing: 4rpx;
 }
 
-/* 订单列表 */
+/* 订单列表：行式条目，虚线分栏，无卡片底 */
 .orderslist {
-  padding: 20rpx;
+  padding: 0 32rpx 48rpx;
 }
 
 .ordercard {
-  background-color: #fff;
-  border-radius: 12rpx;
-  margin-bottom: 20rpx;
-  overflow: hidden;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  padding: 30rpx 0 26rpx;
+  border-bottom: 1px dashed var(--line);
+}
+
+.orderslist .ordercard:first-child {
+  border-top: 1px dashed var(--line);
+  margin-top: 12rpx;
 }
 
 /* 订单头部 */
 .orderheader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 15rpx 20rpx;
-  border-bottom: 1rpx solid #eee;
-  background-color: #f9f9f9;
+  align-items: flex-start;
+  gap: 20rpx;
 }
 
 .orderinfo {
   flex: 1;
+  min-width: 0;
 }
 
 .orderid {
-  font-size: 26rpx;
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 5rpx;
-  font-family: monospace;
+  font-family: Georgia, 'Songti SC', serif;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: .5rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ordertime {
-  font-size: 22rpx;
-  color: #999;
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 20rpx;
+  color: var(--muted);
+  margin-top: 8rpx;
 }
 
 .orderstatus {
-  font-size: 24rpx;
-  color: #1296db;
-  font-weight: bold;
-  white-space: nowrap;
-  padding: 8rpx 12rpx;
-  background-color: #e8f4fd;
-  border-radius: 20rpx;
+  flex-shrink: 0;
+  font-size: 20rpx;
+  letter-spacing: 1rpx;
+  color: var(--muted);
+  padding: 4rpx 14rpx;
+  border: 1px dashed var(--line);
+  border-radius: 2rpx;
+}
+
+.orderstatus.is-cancelled {
+  border-color: var(--stamp-red);
+  color: var(--stamp-red);
 }
 
 /* 商品预览 */
 .goodspreview {
-  padding: 15rpx 20rpx;
-  border-bottom: 1rpx solid #eee;
+  padding: 18rpx 0 0;
 }
 
 .goodspreviewitem {
   display: flex;
-  gap: 12rpx;
-  margin-bottom: 12rpx;
+  gap: 14rpx;
   align-items: center;
+  margin-bottom: 12rpx;
 }
 
 .goodspreviewitem:last-child {
@@ -123,76 +146,82 @@ page {
 }
 
 .goodsimg {
-  width: 60rpx;
-  height: 60rpx;
-  border-radius: 6rpx;
-  background-color: #f0f0f0;
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 2rpx;
+  background: #E9E4D8;
+  flex-shrink: 0;
+  filter: saturate(.92);
 }
 
 .goodspreviewinfo {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 5rpx;
+  min-width: 0;
 }
 
 .goodsname {
-  font-size: 24rpx;
-  color: #333;
-  font-weight: bold;
+  font-size: 22rpx;
+  color: var(--muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .goodsprice {
-  font-size: 22rpx;
-  color: #ff6b35;
-  font-weight: bold;
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 20rpx;
+  color: var(--green);
+  margin-top: 4rpx;
 }
 
 .goodsqty {
-  font-size: 22rpx;
-  color: #999;
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 20rpx;
+  color: var(--muted);
   white-space: nowrap;
 }
 
 /* 订单统计 */
 .ordersummary {
-  padding: 15rpx 20rpx;
-  border-bottom: 1rpx solid #eee;
-  background-color: #f9f9f9;
+  padding: 16rpx 0 0;
 }
 
 .summarytotal {
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  font-size: 26rpx;
-  color: #333;
+  align-items: baseline;
+  font-size: 22rpx;
+  color: var(--muted);
 }
 
 .totalprice {
-  font-size: 32rpx;
-  color: #ff6b35;
-  font-weight: bold;
-  margin-left: 8rpx;
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--green);
+  margin-left: 6rpx;
 }
 
-/* 订单操作 */
+.totalprice .rmb {
+  font-size: 20rpx;
+  margin-right: 2rpx;
+}
+
+/* 订单操作：小号描边钮 */
 .orderactions {
   display: flex;
-  gap: 10rpx;
-  padding: 15rpx 20rpx;
+  justify-content: flex-end;
+  gap: 16rpx;
+  padding-top: 18rpx;
 }
 
 .actionbtn {
-  flex: 1;
-  padding: 12rpx;
-  background-color: #1296db;
-  color: #fff;
-  border-radius: 6rpx;
-  font-size: 24rpx;
+  padding: 8rpx 26rpx;
+  background: transparent;
+  border: 1px solid var(--green);
+  color: var(--green);
+  border-radius: 2rpx;
+  font-size: 22rpx;
+  letter-spacing: 2rpx;
   text-align: center;
-  font-weight: bold;
 }
